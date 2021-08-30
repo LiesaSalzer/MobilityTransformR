@@ -90,7 +90,7 @@ eic_marker <- chromatogram(marker, aggregationFun = "max")
 
 
 df <- as.data.frame(intensity(eic_marker[, 1]))
-df <- add_column(df, as.data.frame(rtime(eic_marker[, 1])))
+df <- cbind(df, as.data.frame(rtime(eic_marker[, 1])))
 
 maxInt <- df[which.max(df[, 1]), 1]
 maxMt <- df[which.max(df[, 1]), 2]
