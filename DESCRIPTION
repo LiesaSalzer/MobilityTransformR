@@ -3,10 +3,10 @@ Title: Effective mobility scale transformation of CE-MS(/MS) data
 Version: 0.0.0.91
 Authors@R: c(
            person(given = "Liesa", family = "Salzer",
-           role = c("aut", "cre")
+           role = c("aut", "cre"),
            email = "liesa.salzer@helmholtz-muenchen.de")
            )
-Author: Liesa Salzer [aut, cre],            
+Author: Liesa Salzer [aut, cre]            
 Maintainer: Liesa Salzer <liesa.salzer@helmholtz-muenchen.dee>
 Description: mobilityTransformationR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
 Depends:
