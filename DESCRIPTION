@@ -1,0 +1,29 @@
+Package: mobilityTransformationR
+Title: Effective mobility scale transformation of CE-MS(/MS) data 
+Version: 0.0.0.91
+Authors@R: c(
+           person(given = "Liesa", family = "Salzer",
+           email = "liesa.salzer@helmholtz-muenchen.de")
+           )
+Maintainer: Liesa Salzer <liesa.salzer@helmholtz-muenchen.dee>
+Description: mobilityTransformationR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
+Depends:
+    xcms,
+    MSnbase,
+    magrittr
+Imports:
+    methods    
+Suggests:
+    testthat,
+    knitr (>= 1.1.0),
+    roxygen2,
+    BiocStyle (>= 2.5.19),
+    rmarkdown
+Remotes:
+   RforMassSpectrometry/Spectra
+   sneumann/MsBackendMsp
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

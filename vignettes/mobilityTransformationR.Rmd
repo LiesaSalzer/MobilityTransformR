@@ -1,0 +1,45 @@
+---
+title: "mobilityTransformationR"
+author: "Liesa Salzer"
+output:
+    BiocStyle::html_document:
+        toc_float: true
+vignette: >
+    %\VignetteIndexEntry{Description and usage of mobilityTransformationR}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    %\VignettePackage{xcms}
+    %\VignetteDepends{xcms,BiocStyle}
+---
+
+```{r style, echo = FALSE, results = 'asis', message=FALSE}
+BiocStyle::markdown()
+```
+
+```{r, echo = FALSE, message = FALSE}
+library(BiocStyle)
+```
+
+# Introduction
+
+XXX Add Despription of need of mobility transformation + Ref Drouin et al. 
+
+
+# Setup
+
+## Load required libries
+<code>mobilityTransformationR</code> integrates functions from different libraries.
+
+```{r libraries, message=FALSE, warning=FALSE}
+# installation of additional packages
+devtools::install_github("LiesaSalzer/mobilityTransformationR") 
+
+# load required libraries
+library(xcms)
+library(mobilityTransformationR)
+library(Spectra)
+library(magrittr)
+```
+
+
+
