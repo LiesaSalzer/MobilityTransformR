@@ -30,11 +30,11 @@ library(BiocStyle)
 
 Capillary elecrophoresis coupled to mass spectrometry (CE-MS) in fields as proteomics or metabolomics is less common than for example liquid chromatography-mass spectrometry (LC-MS). A reason might be less reproducible migration times (MT) compared to retention times (RT) because of fluctuations in the Electroosmotic flow (EOF). 
 
-However, the effective mobility of a compound remains stable in the same electrophoretic system. The use of an effective mobility scale instead of a migration time scale circumvents this drawback and will result in highly reproducible peaks, which has already been shown in 2001 @Schmitt-Kopplin2001. 
+However, the effective mobility $µ_{eff}$ of a compound remains stable in the same electrophoretic system. The use of an effective mobility scale instead of a migration time scale circumvents this drawback and will result in highly reproducible peaks, which has already been shown in 2001 @Schmitt-Kopplin2001. 
 
 Effective mobility transformation for CE-MS data is not as straightforward as in CE-UV and until now and to our knowledge there is no implementation in R that performs the effective mobility transformation of CE-MS(/MS) data. 
 
-As a model for the <code>mobilityTransformationR</code> package, we have taken the functions from the recently developed ROMANCE software @ROMANCE2018. ROMANCE is an open-source software that transforms CE-MS data into an effective mobility scale. 
+As a model for the <code>mobilityTransformationR</code> package, we have taken the functions from the recently developed ROMANCE software @ROMANCE2018. ROMANCE is an open-source software that transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. 
 However, the output are two separate files for positive and negative mobilities. Moreover it is only suitable for MS1 data, because the MS2 information will get lost after transformation. 
 
 MS2 data is crucial to improve annotation success in e.g. non-targeted metabolomics, where it will be used for spectral library matching. Therefore, we developed the <code>mobilityTransformationR</code> package, which will cover the mobility transformation of CE-MS/MS data. Also, different to ROMANCE, there will be only a single file containing the effective mobilities, the positive and negative ones. 
@@ -175,7 +175,7 @@ If the peak shape of the EOF marker is bad or it cannot be detected for other re
       µ_{eff} = µ_A + \frac{l}{E} (\frac{1}{t_M - (t_R/2)} - \frac{1}{t_A - (t_R/2)}) 
   (\#eq:mobility2)
 \end{equation}
-with $t\_A$, the MT of the secondary marker and its corresponding mobility $µ\_A$. 
+with $t_A$, the MT of the secondary marker and its corresponding mobility $µ_A$. 
 
 Last, the mobility might be calculated using both markers. Therefore, there is no need to know the applied electrical field nor the exact capillary length. 
 
