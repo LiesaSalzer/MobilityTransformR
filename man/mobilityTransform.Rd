@@ -21,7 +21,7 @@ the number of entries the transformation will be performed either on one or
 both markers.
 
 @param ...
-Additional parameters passed to \code{convertMTime}, as for example \code{L}, \code{U},
+Additional parameters passed to \code{convertMtime}, as for example \code{L}, \code{U},
 and \code{tR}.
 
 @param FUN

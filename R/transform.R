@@ -34,7 +34,7 @@
 #' both markers.
 #' 
 #'  @param ...
-#' Additional parameters passed to `convertMTime`, as for example `L`, `U`, 
+#' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
 #' and `tR`.
 #'  
 #'  @param FUN 
@@ -63,7 +63,7 @@
 #'
 #' @author Liesa Salzer
 #'
-#' @importFrom MetaboCoreUtils convertMTime
+#' @importFrom MetaboCoreUtils convertMtime
 #'
 #' @examples
 #'  rtime <- c(10,20,30,40,50,60,70,80,90,100)
@@ -132,7 +132,7 @@ mobilityTransform <- function(x, marker, ...) {
 #' both markers.
 #' 
 #'  @param ...
-#' Additional parameters passed to `convertMTime`, as for example `L`, `U`, 
+#' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
 #' and `tR`.
 #'  
 #' @details
@@ -153,7 +153,7 @@ mobilityTransform <- function(x, marker, ...) {
 #'
 #' @author Liesa Salzer
 #'
-#' @importFrom MetaboCoreUtils convertMTime
+#' @importFrom MetaboCoreUtils convertMtime
 #' 
 #' @example 
 #' rtime <- c(10,20,30,40,50,60,70,80,90,100)
@@ -165,7 +165,7 @@ mobilityTransform <- function(x, marker, ...) {
 #' 
 transformNumeric <- function(x, marker, ...) {
   
-  convertMTime(x/60, 
+  convertMtime(x/60, 
                rtime = marker$rtime/60, 
                mobility = marker$mobility, ...)
   
@@ -195,7 +195,7 @@ transformNumeric <- function(x, marker, ...) {
 #' both markers.
 #' 
 #'  @param ...
-#' Additional parameters passed to `convertMTime`, as for example `L`, `U`, 
+#' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
 #' and `tR`.
 #'  
 #'  
@@ -218,7 +218,7 @@ transformNumeric <- function(x, marker, ...) {
 #'
 #' @author Liesa Salzer
 #'
-#' @importFrom MetaboCoreUtils convertMTime
+#' @importFrom MetaboCoreUtils convertMtime
 #' 
 #' @example 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
@@ -232,7 +232,7 @@ transformNumeric <- function(x, marker, ...) {
 transformSpectra <- function(x, marker, ...) {
   
   xTransf <- x
-  xTransf$rtime <- convertMTime(xTransf$rtime/60, 
+  xTransf$rtime <- convertMtime(xTransf$rtime/60, 
                             rtime = marker$rtime/60, 
                             mobility = marker$mobility, ...)
   
@@ -269,7 +269,7 @@ transformSpectra <- function(x, marker, ...) {
 #' both markers.
 #' 
 #'  @param ...
-#' Additional parameters passed to `convertMTime`, as for example `L`, `U`, 
+#' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
 #' and `tR`.
 #'  
 #'  
@@ -292,7 +292,7 @@ transformSpectra <- function(x, marker, ...) {
 #'
 #' @author Liesa Salzer
 #'
-#' @importFrom MetaboCoreUtils convertMTime
+#' @importFrom MetaboCoreUtils convertMtime
 #' 
 #' @example 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
@@ -304,7 +304,7 @@ transformSpectra <- function(x, marker, ...) {
 transformOnDiskMSnExp <- function(x, marker, ...) {
   xTransf <- x
   
-  xTransf@featureData@data[["retentionTime"]] <- convertMTime(xTransf@featureData@data[["retentionTime"]]/60, 
+  xTransf@featureData@data[["retentionTime"]] <- convertMtime(xTransf@featureData@data[["retentionTime"]]/60, 
                                 rtime = marker$rtime/60, 
                                 mobility = marker$mobility, ...)
   

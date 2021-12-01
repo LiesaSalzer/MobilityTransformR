@@ -2,4 +2,4 @@
 
 export(getMt)
 export(mobilityTransform)
-importFrom(MetaboCoreUtils,convertMTime)
+importFrom(MetaboCoreUtils,convertMtime)
