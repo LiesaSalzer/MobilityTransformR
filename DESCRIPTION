@@ -8,7 +8,7 @@ Authors@R: c(
            )
 Author: Liesa Salzer [aut, cre]            
 Maintainer: Liesa Salzer <liesa.salzer@helmholtz-munich.dee>
-Description: mobilityTransformationR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
+Description: MobilityTransformationR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
 Depends:
     xcms,
     MSnbase,

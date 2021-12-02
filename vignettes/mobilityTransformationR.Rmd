@@ -47,12 +47,16 @@ The transformation is performed using some base functions of <code>MetaboCoreUti
 # Setup
 
 ## Installation
-The <code>MobilityTransformationR</code> package can be installed directly from GitHub using <code>devtools::install_github("LiesaSalzer/MobilityTransformationR")</code> 
+The <code>MobilityTransformationR</code> package can be installed directly from GitHub using 
+```{r, message=FALSE, warning=FALSE}
+devtools::install_github("LiesaSalzer/MobilityTransformationR")
+```
 
 ## Load required libries
 <code>MobilityTransformationR</code> integrates functions from different libraries.
 
 ```{r libraries, message=FALSE, warning=FALSE}
+devtools::install_github("LiesaSalzer/MobilityTransformationR")
 # load required libraries
 library(MobilityTransformationR)
 library(xcms)
