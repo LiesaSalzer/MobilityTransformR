@@ -1,10 +1,11 @@
 ---
-title: "Description and usage of mobilityTransformationR"
+title: "Description and usage of MobilityTransformationR"
+
 output:
     BiocStyle::html_document:
         toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Description and usage of mobilityTransformationR}
+    %\VignetteIndexEntry{Description and usage of MobilityTransformationR}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     %\VignettePackage{mobilityTransformationR}
@@ -53,6 +54,10 @@ The <code>mobilityTransformationR</code> package can be installed directly from 
 <code>mobilityTransformationR</code> integrates functions from different libraries.
 
 ```{r libraries, message=FALSE, warning=FALSE}
+
+# installation of additional packages
+devtools::install_github("LiesaSalzer/mobilityTransformationR", ref = "devel") 
+
 # load required libraries
 library(mobilityTransformationR)
 library(xcms)
@@ -110,7 +115,7 @@ Use the adapted values to get the exact MT of Paracetamol.
 If several files will be used it is important to select a <code>mt</code>-range wide enough to get the right Paracetamol-peaks in all files, because single migration times might change a lot due to EOF-fluctuations between measurements. 
 ```{r EOF marker getMT, message=FALSE}
 # get the MT of paracetamol
-paracetamol <- getMt(raw_data,
+paracetamol <- getMtime(raw_data,
                         mz = mz_paracetamol, 
                         mt = mt_paracetamol, 
                         minInt = 5000)
@@ -141,6 +146,7 @@ It can be seen that within this mz-window and MT-window no peak is present. If a
 #adjust the mt and mz window if necessary
 mt_procaine <- c(300, 800)
 
+
 marker_EIE <-  raw_data %>% filterMz(mz = mz_procaine) %>% 
     filterRt(rt = mt_procaine)
 
@@ -149,7 +155,8 @@ plot(chromatogram(marker_EIE),
      xlab = "migration time (sec)")
 
 # get the MT of procaine using adjusted parameters
-procaine <- getMt(raw_data,
+
+procaine <- getMtime(raw_data,
                         mz = mz_procaine, 
                         mt = mt_procaine, 
                         minInt = 5000)
@@ -159,6 +166,38 @@ procaine
 
 
 # Effective mobility scale transformation
+<code>mobilityTransform</code> uses different functions to perform the effective
+mobility transformation depending on the input type. It is possible to convert
+<code>numeric</code>, <code>Spectra</code>, and <code>OnDiskMSnExp</code>. 
+Here, we show how each input can be transformed perform the transformation.
+
+## Effective mobility transformation of the single migration times
+First, a <code>data.frame</code> is created that stores the marker information, 
+that will be used to transform the data. Either one or two markers can be used 
+for the transformation. The <code>data.frame</code> needs at least the columns
+<code>rtime</code> and <code>mobility</code>. Additional columns to store marker 
+information might be added as well.
+Here, we start with the neutral EOF marker Paracetamol, having the effective 
+mobility of 0 mm^2 / (kV * min).
+
+```{r, message=FALSE}
+# Create a data.frame that stores marker information
+marker <- data.frame(markerID = "Paracetamol",
+                       rtime = paracetamol,
+                       mobility = 0)
+```
+
+
+Then the effective mobility of the secondary mobility marker Procaine, as single 
+migration time, is determined.
+The transformation is performed using the marker information from Paracetamol. 
+Moreover, if only a single marker is provided for the transformation, also the 
+applied voltage <code>U</code> in kV, and the total and effective capillary 
+length <code>L</code> in mm is needed. 
+Additionally the field ramping time <code>tR</code> (in sec) can be included for
+corrections. 
+
+
 
 Effective mobility scale transformation is performed either by using a single or two mobility markers. Functions were adapted from González-Ruiz et al. @ROMANCE2018 . 
 The standard equation to calculate effective mobility $µ_{eff}$ is 
@@ -192,72 +231,76 @@ First, the effective mobility of the secondary mobility marker (Procaine) is cal
 
 ```{r mobility, message=FALSE}
 
-procaineMobility <- mobilityTransform(tM = procaine, type = "singleMarker", 
-                                      tEOF = paracetamol, tR = 3, 
-                                      U = +30, L = 800, l = 800)
+procaineMobility <- mobilityTransform(x = procaine, marker = marker, 
+                                      tR = 3, U = +30, L = 800)
 procaineMobility
 
-```
+
 Note: The unit of the mobility is $\frac{mm^2}{kV*min}$
 
-## Effective Mobility Scale Transformation on Whole CE-MS Datasets 
-In order to perform the effective mobility scale transformation on whole CE-MS data sets, the data must be loaded as <code>Spectra</code> Object. Here, the migration time scale can be manipulated and transformed into the desired effective mobility scale. 
+## Effective mobility transformation of whole CE-MS runs
 
-```{r spectra, message=FALSE}
-#load the test data as spectra object
-spectra_data <- Spectra(fl, backend = MsBackendMzR())
+<code>mobilityTransform</code> can also be applied to whole CE-MS runs stored either as <code>Spectra</code>-object or <code>OnDiskMSnExp</code>-object.
+As shown as before, either a single or two markers can be used for conversion. 
+Here, we add the marker information of Procaine to the marker <code>data.frame</code>, so the transformation is done based on both markers.
+
+```{r, message=FALSE}
+marker <- rbind(marker, 
+                data.frame(markerID = "Procaine",
+                       rtime = procaine,
+                       mobility = procaineMobility))
 ```
 
-The MT-scale of the <code>Spectra</code> object is transformed into the mobility scale using the <code>mobilityTransform</code> function. Either a single marker or two markers can be used for effective mobility scale transformation.
-Note that if a charged single marker is used for transformation additionally its effective mobility must be provided. 
+
+### Effective mobility transformation of OnDiskMSnExp objects
+The migration time scale of <code>raw_data</code> is transformed and the same class will be returned.
+```{r, message=FALSE}
+# Conversion of mt in OnDiskMSnExp objects
+mobility_data <- mobilityTransform(x = raw_data, marker = marker)
+    
+
+
 
 Here, we apply the effective mobility transformation using two markers according to eq. \@ref(eq:mobility3), Paracetamol as EOF marker and Procaine as charged secondary marker. 
 
-```{r mobility transformation, message=FALSE}
+### Effective mobility transformation of Spectra objects
+<code>Spectra</code>-objects can be transformed similarly in <code>mobilityTransform</code>. The resulting <code>Spectra</code>-objects can then also be exported as <code>.mzML</code> for further processing in different software.
+```{r, message=FALSE}
 #load the test data as spectra object
-spectra_data$rtime <- mobilityTransform(tM = spectra_data$rtime, 
-                                   type = "twoMarker",
-                                   tEOF = paracetamol,
-                                   tA = procaine, 
-                                   tR = 3, 
-                                   mobilityA = procaineMobility
-                                   )
-```
-Now the MT-scale of <code>spectra_data</code> was transformed into the desired mobility scale. Note that the effective mobility values are still stored in  <code>spectra_data$rtime</code>. 
+spectra_data <- Spectra(fl, backend = MsBackendMzR())
 
-In order to be able to further process and analyze the transformed CE-MS(/MS) data with e.g.  <code>xcms</code> it is necessary to order the established effective mobilities and remove <code>spectrumID</code>s to prevent errors. 
-After that, <code>spectra_data</code> is exported as <code>.mzML</code> file and is ready for data analysis using <code>xcms</code> or other softwares and packages.
+spectra_mobility <- mobilityTransform(spectra_data, marker)
 
-```{r remove spectrumID, message=FALSE}
-#Data needs to be ordered by the mobilites and spectrum IDs needs to 
-#be removed to prevent errors in xcms peak picking processes
-spectra_data <- spectra_data[order(rtime(spectra_data))]
-spectra_data$spectrumId <- NA
 
 #Transformed data can then be exported again as .mzML file to use in xcms or other software
 fl_mobility <- tempfile()
 export(applyProcessing(spectra_data), MsBackendMzR(), file = fl_mobility)
+
 ```
 
+
 # Inspect and Analyze the Transformed Data 
-At last, we load the transformed data with <code>MSnbase</code> and inspect them with the <code>plot(chromatogram())</code> function from <code>xcms</code>. 
+The transformed data can displayed and further analyzed with  e.g. <code>xcms</code>. Note that the effective mobility can be accessed by e.g. <code>spectra_mobility$rtime</code>, since functions where adapted from LC-MS based <code>rformassspectrometry</code> functions.
+The resulting unit of the effective mobility is mm^2 / (kV * min).
+
+Here, we inspect them with the <code>plot(chromatogram())</code> function from <code>xcms</code>. 
 The same functions can be now applied to the transformed data as for raw data. Care must be taken at the labeling since it remains "retention time" (or "RT") even if the scale is now in mobility units $\frac{mm^2}{kV*min}$.
 
 As described before, the analyzed data contain 10 different metabolites in 10 ppm concentration acquired in positive ionization mode. We can check the effective mobilities of single compounds by extracting their EIE as for example Lysine (mz = 147.112806).
 
-```{r mobility transformed data, message=FALSE}
-#load the transformed test data with MSnbase
-mobility_data <- readMSData(files = fl_mobility, mode = "onDisk")
 
+```{r mobility transformed data, message=FALSE}
+# Example: Extract ion electropherogram (EIE) from lysine
 mz_lysine <- c(147.112806 - tolerance, 147.112806 + tolerance)
 mobilityRestriction <- c(-100,5000)
 
+
 # Extract ion electropherogram of compound
-lysine_µ_EIE <-  mobility_data %>% 
+lysine_EIE <-  mobility_data %>% 
     filterMz(mz = mz_lysine) %>% 
     filterRt(rt = mobilityRestriction)
 
-plot(chromatogram(lysine_µ_EIE), 
+plot(chromatogram(lysine_EIE), 
      main = expression(paste("Lysine EIE - µ"[eff]," scale")), 
      xlab = expression(paste("µ"[eff],"  (", frac("mm"^2,"kV min"),")"))
      )
