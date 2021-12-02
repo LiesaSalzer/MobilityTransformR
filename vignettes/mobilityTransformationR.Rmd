@@ -1,11 +1,11 @@
 ---
-title: "mobilityTransformationR"
+title: "MobilityTransformationR"
 author: "Liesa Salzer"
 output:
     BiocStyle::html_document:
         toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Description and usage of mobilityTransformationR}
+    %\VignetteIndexEntry{Description and usage of MobilityTransformationR}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     %\VignettePackage{xcms}
@@ -32,7 +32,7 @@ XXX Add Despription of need of mobility transformation + Ref Drouin et al.
 
 ```{r libraries, message=FALSE, warning=FALSE}
 # installation of additional packages
-devtools::install_github("LiesaSalzer/mobilityTransformationR") 
+devtools::install_github("LiesaSalzer/mobilityTransformationR", ref = "devel") 
 
 # load required libraries
 library(xcms)
