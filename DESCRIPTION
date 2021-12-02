@@ -1,4 +1,4 @@
-Package: mobilityTransformationR
+Package: MobilityTransformationR
 Title: Effective mobility scale transformation of CE-MS(/MS) data 
 Version: 0.0.0.91
 Authors@R: c(
