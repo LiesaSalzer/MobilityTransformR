@@ -70,7 +70,7 @@ plot(chromatogram(marker))
 #adjust the mt and mz window if necessary
 mt_paracetamol <- c(700, 1000)
 
-paracetamol <- getMt(raw_data,
+paracetamol <- getMtime(raw_data,
                         mz = mz_paracetamol, 
                         mt = mt_paracetamol, 
                         minInt = 5000)
@@ -90,7 +90,7 @@ mt_procaine <- c(300, 800)
 marker <-  raw_data %>% filterMz(mz = mz_procaine) %>% filterRt(rt = mt_procaine)
 plot(chromatogram(marker))
 
-procaine <- getMt(raw_data,
+procaine <- getMtime(raw_data,
                         mz = mz_procaine, 
                         mt = mt_procaine, 
                         minInt = 5000)
@@ -98,67 +98,94 @@ procaine <- getMt(raw_data,
 ```
 
 # Effective mobility scale transformation
+<code>mobilityTransform</code> uses different functions to perform the effective
+mobility transformation depending on the input type. It is possible to convert
+<code>numeric</code>, <code>Spectra</code>, and <code>OnDiskMSnExp</code>. 
+Here, we show how each input can be transformed perform the transformation.
 
-## Effective mobility calculation of the secondary marker
-First, the effective mobility of the secondary mobility marker is calculated.
-If a single migration time, as here shown for Procaine, needs to be changed into effective mobility, the <code>mobilityTransform</code> function can be applied by using the mt (<code>tM</code>) as input. 
-The transformation is performed using the mt of the EOF marker <code>tEOF</code> paracetamol, the field ramping time <code>tR</code> (in sec), the applied voltage <code>U</code> in kV, and the total and effective capillary length <code>L</code> and <code>l</code> in mm.
-```{r mobility, message=FALSE}
+## Effective mobility transformation of the single migration times
+First, a <code>data.frame</code> is created that stores the marker information, 
+that will be used to transform the data. Either one or two markers can be used 
+for the transformation. The <code>data.frame</code> needs at least the columns
+<code>rtime</code> and <code>mobility</code>. Additional columns to store marker 
+information might be added as well.
+Here, we start with the neutral EOF marker Paracetamol, having the effective 
+mobility of 0 mm^2 / (kV * min).
 
-procaineMobility <- mobilityTransform(tM = procaine, type = "singleMarker", 
-                                      tEOF = paracetamol, tR = 3, 
-                                      U = +30, L = 800, l = 800)
-
+```{r, message=FALSE}
+# Create a data.frame that stores marker information
+marker <- data.frame(markerID = "Paracetamol",
+                       rtime = paracetamol,
+                       mobility = 0)
 ```
 
-In order to perform the effective mobility scale transformation on whole CE-MS data sets, the data must be loaded as <code>Spectra</code> Object. Here, the migration time scale can be manipulated and transformed into the desired effective mobility scale. 
 
-```{r spectra, message=FALSE}
+Then the effective mobility of the secondary mobility marker Procaine, as single 
+migration time, is determined.
+The transformation is performed using the marker information from Paracetamol. 
+Moreover, if only a single marker is provided for the transformation, also the 
+applied voltage <code>U</code> in kV, and the total and effective capillary 
+length <code>L</code> in mm is needed. 
+Additionally the field ramping time <code>tR</code> (in sec) can be included for
+corrections. 
+
+```{r mobility, message=FALSE}
+procaineMobility <- mobilityTransform(x = procaine, marker = marker, 
+                                      tR = 3, U = +30, L = 800)
+```
+
+## Effective mobility transformation of whole CE-MS runs
+
+<code>mobilityTransform</code> can also be applied to whole CE-MS runs stored either as <code>Spectra</code>-object or <code>OnDiskMSnExp</code>-object.
+As shown as before, either a single or two markers can be used for conversion. 
+Here, we add the marker information of Procaine to the marker <code>data.frame</code>, so the transformation is done based on both markers.
+
+```{r, message=FALSE}
+marker <- rbind(marker, 
+                data.frame(markerID = "Procaine",
+                       rtime = procaine,
+                       mobility = procaineMobility))
+```
+
+### Effective mobility transformation of OnDiskMSnExp objects
+The migration time scale of <code>raw_data</code> is transformed and the same class will be returned.
+```{r, message=FALSE}
+# Conversion of mt in OnDiskMSnExp objects
+mobility_data <- mobilityTransform(x = raw_data, marker = marker)
+    
+```
+
+### Effective mobility transformation of Spectra objects
+<code>Spectra</code>-objects can be transformed similarly in <code>mobilityTransform</code>. The resulting <code>Spectra</code>-objects can then also be exported as <code>.mzML</code> for further processing in different software.
+```{r, message=FALSE}
 #load the test data as spectra object
 spectra_data <- Spectra(fl, backend = MsBackendMzR())
-```
 
-The migration time of the <code>Spectra</code> object easily might be transformed into the mobility scale using the <code>mobilityTransform</code> function. Either a single marker or two markers can be used for effective mobility scale transformation.
-Note that if a charged single marker is used for transformation additionally its effective mobility must be provided. 
-Here, we apply the effective mobility transformation using two markers, Paracetamol as EOF marker and Procaine as charged secondary marker. 
-
-```{r mobility transformation, message=FALSE}
-#load the test data as spectra object
-spectra_data$rtime <- mobilityTransform(tM = spectra_data$rtime, 
-                                   type = "twoMarker",
-                                   tEOF = paracetamol,
-                                   tA = procaine, 
-                                   tR = 3, 
-                                   mobilityA = procaineMobility
-                                   )
-
-#Data needs to be ordered by the migration time and spectrum IDs needs to 
-#be removed to prevent errors in xcms peak picking processes
-spectra_data <- spectra_data[order(rtime(spectra_data))]
-spectra_data$spectrumId <- NA
+spectra_mobility <- mobilityTransform(spectra_data, marker)
 
 #Transformed data can then be exported again as .mzML file to use in xcms or other software
 fl_mobility <- tempfile()
 export(applyProcessing(spectra_data), MsBackendMzR(), file = fl_mobility)
+
 ```
 
-# Inspect effective mobility transformed data 
-The transformed data can be loaded and analyzed with xcms. Note that the x-axis label "retention time" still corresponds to LC-MS data and is not true for the transformed CE-MS data. The x-axis of the transformed CE-MS data corresponds to the effective mobility in mm^2 / (kV * min).
-The same functions of xcms can be now applied for the transformed data, but care must be taken that e.g. when filter for effective mobility the function <code>filterRT</code> is used.
-```{r mobility transformed data, message=FALSE}
-#load the transformed test data with MSnbase
-mobility_data <- readMSData(files = fl_mobility, mode = "onDisk")
 
+# Inspect effective mobility transformed data 
+The transformed data can displayed and further analyzed with  e.g. <code>xcms</code>. Note that the effective mobility can be accessed by e.g. <code>spectra_mobility$rtime</code>, since functions where adapted from LC-MS based <code>rformassspectrometry</code> functions.
+The resulting unit of the effective mobility is mm^2 / (kV * min).
+
+```{r mobility transformed data, message=FALSE}
+# Example: Extract ion electropherogram (EIE) from lysine
 mz_lysine <- c(147.112806 - tolerance, 147.112806 + tolerance)
 mobilityRestriction <- c(-100,5000)
 
-# Extract ion electropherogram of compound
+# EIE of lysine (mobility scale)
 lysine_mobility <-  mobility_data %>% filterMz(mz = mz_lysine) %>% filterRt(rt = mobilityRestriction)
-plot(chromatogram(lysine_mobility))
+plot(chromatogram(lysine_mobility), xlab = "effective mobility")
 
-# compare with extracted ion electropherogram of migration time scale
+# compare with EIE of lysine in mt-scale
 lysine_mt <-  raw_data %>% filterMz(mz = mz_lysine)# %>% filterRt(rt = c(0))
-plot(chromatogram(lysine_mt))
+plot(chromatogram(lysine_mt), xlab = "migration time")
 
 ```
 
