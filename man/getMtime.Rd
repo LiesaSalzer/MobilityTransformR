@@ -34,7 +34,9 @@ and different mt are being picked.}
 going to be determined.}
 }
 \value{
-single \code{numeric} that represents the migration time in sec
+\code{data.frame} with two columns "rtime" storing the migration time in sec,
+and "fileIdx" storing the file index and the number of rows corresponding to
+the number of input files.
 }
 \description{
 The function \code{getMtime} searches the migration time (mt) of a known compound

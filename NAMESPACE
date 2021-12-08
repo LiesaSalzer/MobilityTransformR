@@ -2,5 +2,6 @@
 
 export(getMtime)
 export(mobilityTransform)
-import(xcms)
 importFrom(MetaboCoreUtils,convertMtime)
+importFrom(xcms,chromPeaks)
+importFrom(xcms,findChromPeaks)

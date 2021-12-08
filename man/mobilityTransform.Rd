@@ -8,7 +8,7 @@ mobilityTransform(x, marker, ...)
 }
 \arguments{
 \item{x}{\code{numeric} migration time vector, \code{Spectra} -object, or \code{MSnOnDiskExp}-object
-that serves as input file to perform the effectibe mobility transformation.
+that serves as input file to perform the effective mobility transformation.
 The respective migration time scale should be in seconds(!).}
 
 \item{marker}{\code{data.frame} containing minimum two columns, where one holds the determined
@@ -16,21 +16,19 @@ migration time in minutes (here referred to as "rtime") of the EOF marker in
 the same run in which the migration time is going to be transformed and the
 other column the respective mobility ("mobility") of the EOF markers. Each
 row hold the values for one EOF marker.
-One or two entries are required for the transformation and depending on
-the number of entries the transformation will be performed either on one or
+If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required, that
+stores the file Index.
+One or two entries are required per file for the transformation and depending
+on the number of entries the transformation will be performed either on one or
 both markers.
 
 @param ...
 Additional parameters passed to \code{convertMtime}, as for example \code{L}, \code{U},
-and \code{tR}.
-
-@param FUN
-\code{function} that is defined by the input-class and performs the actual
-transformation}
+and \code{tR}.}
 }
 \value{
-The same class as the input class, i.e. if a \code{numeric} is used as input a
-\code{numeric} that represents effective mobility will be the output.
+The same class as the input class will be returned, i.e. if a \code{numeric} is
+used as input a \code{numeric} that represents effective mobility will be returned.
 If a \code{Spectra}-Object is the input, also a \code{Spectra}-Object with transformed
 mobility scale will be returned. The same applies for \code{MSnOnDiskExp}-objects.
 The respective unit for the effective mobility is mm^2 / (kV * min)
@@ -44,14 +42,7 @@ charged EOF markers are spiked into the sample before analysis. The
 information of the EOF markers (migration time and effective mobility) will
 be then used to perform the  effective mobility transformation of the
 migration time scale.
-\code{mobilityTransform} is a method that used different functions to convert
-CE-MS data, depending on the input class. Currently, \code{mobilityTransform}
-supports a \code{numeric} vector of migration times as input, a \code{Spectra}-object
-or \code{MSnOnDiskExp}-objects.
-}
-\details{
-\code{mobilityTransform} performs effective mobility scale transformation of
-migration time-scaled CE data.
+
 For the transformation, either one mobility marker or both can be used.
 If a single marker is used, either a neutral EOF marker, or charged
 marker with its corresponding mobilities (0 for the neutral marker) must be
@@ -61,6 +52,28 @@ If two markers are used, both a neutral EOF marker and a charged marker
 including their corresponding mobility must be provided.
 Additionally, field ramping delays can be included by \code{tR}, which will
 result in more precise effective mobility values.
+
+Currently, \code{mobilityTransform} supports \code{numeric} vectors of migration times
+as input, \code{Spectra}-objects or \code{MSnOnDiskExp}-objects.
+\code{mobilityTransform} is a method that used different functions to convert
+CE-MS data, depending on the input class. Following functions will be applied
+depending on the input class:
+\itemize{
+\item \code{.transformNumeric}: performs effective mobility scale transformation of a
+\code{numeric} migration time vector as input. This can be used to transform a
+row of migration times or a single value. This function will return a
+\code{numeric}
+\item \code{.transformSpectra} performs effective mobility scale transformation of
+the migration time scale within a \code{Spectra} object. This function will
+return a \code{Spectra} object with effective mobility scale
+\item \code{.transformOnDiskMSnExp} performs effective mobility scale transformation
+of the migration time scale within an \code{OnDiskMSnExp} object.
+Since \code{OnDiskMSnExp} can store multiple files, it is also possible to
+perform the transformation of multiple files. Hence,
+\code{.transformOnDiskMSnExp} requires the \code{marker} \code{data.frame} to have an
+additional column "fileIdx" that stores the file Index of the migration
+time of all markers.
+}
 }
 \examples{
  rtime <- c(10,20,30,40,50,60,70,80,90,100)

@@ -42,12 +42,15 @@
 #' xcms. 
 #'
 #' @return
-#' single `numeric` that represents the migration time in sec 
+#' `data.frame` with two columns "rtime" storing the migration time in sec, 
+#' and "fileIdx" storing the file index and the number of rows corresponding to 
+#' the number of input files. 
 #'
 #' @author Liesa Salzer 
 #'
 #'  
-#'@import xcms
+#'@importFrom  xcms findChromPeaks 
+#'@importFrom  xcms chromPeaks
 #'
 #'@export
 getMtime <- function(x, mz = numeric(), mt = numeric(), 
@@ -64,23 +67,35 @@ if (missing(mz) | missing(mt) | missing(minInt))
 if (length(minInt) != 1) 
   stop("'minInt' needs to be of length 1")
 
+  rt_df <- data.frame(rtime = integer(),
+                      fileIdx = integer())
+  
+  for (i in unique(fromFile(x))) {
+    x_i <- filterFile(x, i)
+    
+    df <- findChromPeaks(
+      chromatogram(filterMz(x_i, mz = mz) %>% filterRt(rt = mt), 
+                   aggregationFun = "max"), 
+      param = CentWaveParam(peakwidth = peakwidth, noise = minInt, 
+                            mzdiff = mzdiff)
+    ) %>% chromPeaks() %>% 
+      as.data.frame()
+    
+    
+    if (length(df$rt) == 0) 
+      stop("No peaks have been found, align input parameters")
+    
+    else if (length(df$rt) > 1) 
+      stop(length(df$rt), " peaks have been found, align input parameters")
+    
+    else 
+      rt_df <- rbind(rt_df, data.frame(rtime = df$rt,
+                                      fileIdx = i))
 
+    
+  }
+  
+  return(rt_df)
 
-df <- findChromPeaks(
-  chromatogram(filterMz(x, mz = mz) %>% filterRt(rt = mt), 
-               aggregationFun = "max"), 
-  param = CentWaveParam(peakwidth = peakwidth, noise = minInt, 
-                        mzdiff = mzdiff)
-  ) %>% chromPeaks() %>% 
-  as.data.frame()
-
-
-if (length(df$rt) == 0) 
-  stop("No peaks have been found, align input parameters")
-
-else if (length(df$rt) > 1) 
-  stop(length(df$rt), " peaks have been found, align input parameters")
-
-else df$rt
 
 }

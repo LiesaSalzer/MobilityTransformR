@@ -74,6 +74,7 @@ The test data is loaded using the <code>readMSData()</code> function from <code>
 ```{r data, message=FALSE}
 fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
                   package = "MobilityTransformationR")
+fl <- list.files(system.file("extdata/", package = "MobilityTransformationR"), pattern = ".mzML", full.names = T)
 
 # Load mzXML data with MSnBase
 raw_data <- readMSData(files = fl, mode = "onDisk")
@@ -244,6 +245,7 @@ marker <- rbind(marker,
                 data.frame(markerID = "Procaine",
                        rtime = procaine,
                        mobility = procaineMobility))
+marker$fileIdx <- c(1, 1)
 ```
 
 
