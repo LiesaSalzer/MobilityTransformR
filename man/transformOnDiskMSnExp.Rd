@@ -9,12 +9,13 @@ transformOnDiskMSnExp(x, marker, ...)
 \arguments{
 \item{x}{\code{OnDiskMSnExp}-object that stores the migration times in seconds.}
 
-\item{marker}{\code{data.frame} containing minimum two columns, where one holds the determined
+\item{marker}{\code{data.frame} containing minimum three columns, where one holds the determined
 migration time in minutes (here referred to as "rtime") of the EOF marker in
 the same run in which the migration time is going to be transformed and the
-other column the respective mobility ("mobility") of the EOF markers. Each
-row hold the values for one EOF marker.
-One or two entries are required for the transformation and depending on
+second column the respective mobility ("mobility") of the EOF markers. The
+third column "fileIdx" stores file indices of the origin of the EOF markers.
+Each row hold the values for one EOF marker.
+One or two entries are required per file for the transformation and depending on
 the number of entries the transformation will be performed either on one or
 both markers.
 

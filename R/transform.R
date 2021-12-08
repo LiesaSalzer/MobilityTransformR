@@ -74,37 +74,69 @@
 #'
 #'@export
 #'
-mobilityTransform <- function(x, marker, ...) {
-  
-  ## sanity checks
-  if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp")) 
-    stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but 
-         not class '", class(x),"'")
-  if (missing(marker)) {
-    stop("Missing data.frame 'marker' with marker information")}
-  if (!all(c("rtime","mobility") %in% colnames(marker))) {
-    stop("Missing column 'rtime', 'mobility' or both")}
+# mobilityTransform <- function(x, marker, ...) {
+#   
+#   ## sanity checks
+#   if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp")) 
+#     stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but 
+#          not class '", class(x),"'")
+#   if (missing(marker)) {
+#     stop("Missing data.frame 'marker' with marker information")}
+#   if (!all(c("rtime","mobility") %in% colnames(marker))) {
+#     stop("Missing column 'rtime', 'mobility' or both")}
+#     
+#   
+#   if (class(x) == "numeric") {
+#     FUN = transformNumeric
+#     FUN <- match.fun(FUN)
+#     do.call(FUN, list(x = x, marker = marker, ...))
+#   }
+#   
+#   else if (class(x) == "Spectra") {
+#     FUN = transformSpectra
+#     FUN <- match.fun(FUN)
+#     do.call(FUN, list(x = x, marker = marker, ...))
+#   }
+#   
+#   else if (class(x) == "OnDiskMSnExp") {
+#     FUN = transformOnDiskMSnExp
+#     FUN <- match.fun(FUN)
+#     do.call(FUN, list(x = x, marker = marker, ...))
+#   }
+#   
+# }
+
+
+setGeneric("mobilityTransform", function(x, marker, ...)
+  standardGeneric("mobilityTransform"))
+
+
+setMethod(
+  "mobilityTransform", 
+  signature(x = "numeric"), 
+  function(x, marker, ...){
+    transformNumeric(x, marker, ...)
+  }
+)
+
+setMethod(
+  "mobilityTransform", 
+  signature(x = "Spectra"),
+  function(x, marker, ...){
     
-  
-  if (class(x) == "numeric") {
-    FUN = transformNumeric
-    FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
+    transformSpectra(x, marker, ...)
+  }
+)
+
+setMethod(
+  "mobilityTransform", 
+  signature(x = "OnDiskMSnExp"),
+  function(x, marker, ...){
+    
+    transformOnDiskMSnExp(x, marker, ...)
   }
   
-  else if (class(x) == "Spectra") {
-    FUN = transformSpectra
-    FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
-  }
-  
-  else if (class(x) == "OnDiskMSnExp") {
-    FUN = transformOnDiskMSnExp
-    FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
-  }
-  
-}
+)
 
 #' @name transformNumeric
 #'
@@ -259,12 +291,13 @@ transformSpectra <- function(x, marker, ...) {
 #' `OnDiskMSnExp`-object that stores the migration times in seconds.
 #'
 #' @param marker
-#' `data.frame` containing minimum two columns, where one holds the determined 
+#' `data.frame` containing minimum three columns, where one holds the determined 
 #' migration time in minutes (here referred to as "rtime") of the EOF marker in 
 #' the same run in which the migration time is going to be transformed and the 
-#' other column the respective mobility ("mobility") of the EOF markers. Each 
-#' row hold the values for one EOF marker. 
-#' One or two entries are required for the transformation and depending on 
+#' second column the respective mobility ("mobility") of the EOF markers. The 
+#' third column "fileIdx" stores file indices of the origin of the EOF markers. 
+#' Each row hold the values for one EOF marker. 
+#' One or two entries are required per file for the transformation and depending on 
 #' the number of entries the transformation will be performed either on one or 
 #' both markers.
 #' 
@@ -296,19 +329,27 @@ transformSpectra <- function(x, marker, ...) {
 #' 
 #' @example 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
-#' package = "mobilityTransformationR")
+#' package = "MobilityTransformationR")
 #' raw_data <- readMSData(files = fl,
 #'                        mode = "onDisk")
 #' transformOnDiskMSnExp(x = raw_data, marker = marker)
 
 transformOnDiskMSnExp <- function(x, marker, ...) {
+  if (!all(c("fileIdx") %in% colnames(marker))) {
+    stop("Missing column 'fileIdx'")}
+  
   xTransf <- x
   
-  xTransf@featureData@data[["retentionTime"]] <- convertMtime(xTransf@featureData@data[["retentionTime"]]/60, 
-                                rtime = marker$rtime/60, 
-                                mobility = marker$mobility, ...)
+  rt_file <- split(rtime(x), fromFile(x))
+  
+  for (i in names(rt_file)) {
+    ## Filter fData(xTransf) based on file index and change rt into transformed scale
+    fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
+      mobilityTransform(rt_file[[i]]/60, marker[marker$fileIdx == i,])
+  }
   
   return(xTransf)
+  
 }
 
-
+test <- mobilityTransform(raw_data, marker = markers)

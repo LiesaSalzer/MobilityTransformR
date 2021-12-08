@@ -48,7 +48,7 @@ The transformation is performed using some base functions of <code>MetaboCoreUti
 
 ## Installation
 The <code>MobilityTransformationR</code> package can be installed directly from GitHub using 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, message=FALSE}
 devtools::install_github("LiesaSalzer/MobilityTransformationR")
 ```
 
