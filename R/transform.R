@@ -351,5 +351,3 @@ transformOnDiskMSnExp <- function(x, marker, ...) {
   return(xTransf)
   
 }
-
-test <- mobilityTransform(raw_data, marker = markers)
