@@ -207,7 +207,8 @@ setMethod(
 #' @return
 #' `OnDiskMSnExp`-Object that stores the effective mobility in mm^2 / (kV * min). 
 #' 
-#' @example 
+#' 
+#' @examples 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
 #' package = "MobilityTransformationR")
 #' raw_data <- readMSData(files = fl,
@@ -221,7 +222,7 @@ setMethod(
 
 .transformOnDiskMSnExp <- function(x, marker, ...) {
   ## sanity checks
-  if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp"))
+  if (!class(x) %in% c("OnDiskMSnExp"))
     stop("'x' needs to be of class 'OnDistMSnExp' but not class '", 
          class(x),"'")
   if (missing(marker)) {
