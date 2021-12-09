@@ -295,7 +295,7 @@ same class.
 
 ```{r, message=FALSE}
 # Conversion of mt in OnDiskMSnExp objects
-mobility_data <- mobilityTransform(x = raw_data, marker = marker)
+#mobility_data <- mobilityTransform(x = raw_data, marker = marker)
 mobility_data <- mobilityTransform(x = raw_data,
                                    marker = marker[marker$markerID == "Paracetamol",], 
                                    U = 30, L = 800)

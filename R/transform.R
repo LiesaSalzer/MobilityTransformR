@@ -140,9 +140,8 @@ setMethod(
 #' 
 .transformNumeric <- function(x, marker, ...) {
   ## sanity checks
-  if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp"))
-    stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but
-         not class '", class(x),"'")
+  if (!class(x) %in% c("numeric"))
+    stop("'x' needs to be of class 'numeric' but not class '", class(x),"'")
   if (missing(marker)) {
     stop("Missing data.frame 'marker' with marker information")}
   if (!all(c("rtime","mobility") %in% colnames(marker))) {
@@ -176,9 +175,8 @@ setMethod(
 
 .transformSpectra <- function(x, marker, ...) {
   ## sanity checks
-  if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp"))
-    stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but
-         not class '", class(x),"'")
+  if (!class(x) %in% c("Spectra"))
+    stop("'x' needs to be of class 'Spectra' but not class '", class(x),"'")
   if (missing(marker)) {
     stop("Missing data.frame 'marker' with marker information")}
   if (!all(c("rtime","mobility") %in% colnames(marker))) {
@@ -224,8 +222,8 @@ setMethod(
 .transformOnDiskMSnExp <- function(x, marker, ...) {
   ## sanity checks
   if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp"))
-    stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but
-         not class '", class(x),"'")
+    stop("'x' needs to be of class 'OnDistMSnExp' but not class '", 
+         class(x),"'")
   if (missing(marker)) {
     stop("Missing data.frame 'marker' with marker information")}
   if (!all(c("rtime","mobility","fileIdx") %in% colnames(marker))) {
