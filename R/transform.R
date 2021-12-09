@@ -121,6 +121,8 @@ setMethod(
 )
 
 #' @name .transformNumeric
+#' 
+#' @title Transformation of numeric
 #'
 #' @param x
 #' `numeric` migration time vector in seconds.
@@ -154,6 +156,8 @@ setMethod(
 }
 
 #' @name .transformSpectra
+#' 
+#' @title Transformation of Spectra
 #'
 #' @param x
 #' `Spectra`-object that stores the migration times in seconds.
@@ -197,6 +201,8 @@ setMethod(
 
 #' @name .transformOnDiskMSnExp
 #' 
+#' @title Transformation of OnDiskMSnExp
+#' 
 #' @param x
 #' `OnDiskMSnExp`-object that stores the migration times in seconds.
 #'  
@@ -232,16 +238,11 @@ setMethod(
   for (i in names(rt_file)) {
     ## Filter fData(xTransf) based on file index and change rt into transformed scale
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
-      mobilityTransform(rt_file[[i]]/60, marker[marker$fileIdx == i,])
-    
-    ## Data needs to be ordered by the migration time and spectrum IDs needs to 
-    ## be removed to prevent errors in xcms 
-    fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
-      order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime)
+      convertMtime(rt_file[[i]]/60, 
+                   rtime = marker[marker$fileIdx == i,]$rtime/60, 
+                   mobility = marker[marker$fileIdx == i,]$mobility, ...)
     
   }
-  
-  fData(xTransf)$spectrumId <- NA
   
   return(xTransf)
   
