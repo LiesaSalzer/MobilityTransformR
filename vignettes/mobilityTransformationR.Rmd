@@ -68,6 +68,7 @@ analyzed in R or other software.
 The <code>MobilityTransformationR</code> package can be installed directly from 
 GitHub using 
 ```{r, message=FALSE, warning=FALSE, message=FALSE}
+options(timeout=9999999)
 devtools::install_github("LiesaSalzer/MobilityTransformationR")
 ```
 
@@ -295,11 +296,7 @@ same class.
 
 ```{r, message=FALSE}
 # Conversion of mt in OnDiskMSnExp objects
-#mobility_data <- mobilityTransform(x = raw_data, marker = marker)
-mobility_data <- mobilityTransform(x = raw_data,
-                                   marker = marker[marker$markerID == "Paracetamol",], 
-                                   U = 30, L = 800)
-    
+mobility_data <- mobilityTransform(x = raw_data, marker = marker)
 ```
 
 
@@ -363,6 +360,33 @@ lysine_mt_EIE <-  raw_data %>%
 
 plot(chromatogram(lysine_mt_EIE),
      main = "Lysine EIE - MT scale", 
+     xlab = "MT (sec)")
+
+```
+```{r amp, message=FALSE}
+# Example: Extract ion electropherogram (EIE) from lysine
+mz_AMP <- c(348.070913
+ - tolerance, 348.070913
+ + tolerance)
+mobilityRestriction <- c(-100, 100)
+
+
+# Extract ion electropherogram of compound
+AMP_EIE <-  mobility_data %>% 
+    filterMz(mz = mz_AMP) %>% 
+    filterRt(rt = mobilityRestriction)
+
+plot(chromatogram(AMP_EIE), 
+     main = expression(paste("AMP EIE - µ"[eff]," scale")), 
+     xlab = expression(paste("µ"[eff],"  (", frac("mm"^2,"kV min"),")"))
+     )
+
+# compare with extracted ion electropherogram of migration time scale
+AMP_mt_EIE <-  raw_data %>% 
+    filterMz(mz = mz_AMP) %>% filterRt(c(800,900))
+
+plot(chromatogram(AMP_mt_EIE),
+     main = "AMP EIE - MT scale", 
      xlab = "MT (sec)")
 
 ```

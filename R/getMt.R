@@ -86,7 +86,8 @@ if (length(minInt) != 1)
       stop("No peaks have been found, align input parameters")
     
     else if (length(df$rt) > 1) 
-      stop(length(df$rt), " peaks have been found, align input parameters")
+      stop(length(df$rt), " peaks have been found in file ", i,
+           ", align input parameters")
     
     else 
       rt_df <- rbind(rt_df, data.frame(rtime = df$rt,
