@@ -91,34 +91,37 @@
 #'
 #'@export
 
-setGeneric("mobilityTransform", function(x, marker, ...)
-  standardGeneric("mobilityTransform"))
-
-
-setMethod(
-  "mobilityTransform", 
-  signature(x = "numeric"), 
-  function(x, marker, ...){
-    .transformNumeric(x, marker, ...)
+mobilityTransform <- function(x, marker, ...) {
+  
+  ## sanity checks
+  if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp")) 
+    stop("'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but 
+          not class '", class(x),"'")
+  if (missing(marker)) {
+    stop("Missing data.frame 'marker' with marker information")}
+  if (!all(c("rtime","mobility") %in% colnames(marker))) {
+    stop("Missing column 'rtime', 'mobility' or both")}
+  
+  
+  if (is(x, "numeric")) {
+    FUN = .transformNumeric
+    FUN <- match.fun(FUN)
+    do.call(FUN, list(x = x, marker = marker, ...))
   }
-)
-
-setMethod(
-  "mobilityTransform", 
-  signature(x = "Spectra"),
-  function(x, marker, ...){
-    .transformSpectra(x, marker, ...)
-  }
-)
-
-setMethod(
-  "mobilityTransform", 
-  signature(x = "OnDiskMSnExp"),
-  function(x, marker, ...){
-    .transformOnDiskMSnExp(x, marker, ...)
+  else if (is(x, "Spectra")) {
+    FUN = .transformSpectra
+    FUN <- match.fun(FUN)
+    do.call(FUN, list(x = x, marker = marker, ...))
   }
   
-)
+  else if (is(x, "OnDiskMSnExp")) {
+    FUN = .transformOnDiskMSnExp
+    FUN <- match.fun(FUN)
+    do.call(FUN, list(x = x, marker = marker, ...))
+  }
+  
+  
+}
 
 #' @name .transformNumeric
 #' 
@@ -139,15 +142,7 @@ setMethod(
 #' transformNumeric(x = rtime, marker = marker[-1,], U = 30, L = 90)
 #' 
 .transformNumeric <- function(x, marker, ...) {
-  ## sanity checks
-  if (!class(x) %in% c("numeric"))
-    stop("'x' needs to be of class 'numeric' but not class '", class(x),"'")
-  if (missing(marker)) {
-    stop("Missing data.frame 'marker' with marker information")}
-  if (!all(c("rtime","mobility") %in% colnames(marker))) {
-    stop("Missing column 'rtime', 'mobility' or both")}
-  
-  
+
   convertMtime(x/60, 
                rtime = marker$rtime/60, 
                mobility = marker$mobility, ...)
@@ -174,14 +169,6 @@ setMethod(
 #' .transformSpectra(x = spectra_data, marker = marker)
 
 .transformSpectra <- function(x, marker, ...) {
-  ## sanity checks
-  if (!class(x) %in% c("Spectra"))
-    stop("'x' needs to be of class 'Spectra' but not class '", class(x),"'")
-  if (missing(marker)) {
-    stop("Missing data.frame 'marker' with marker information")}
-  if (!all(c("rtime","mobility") %in% colnames(marker))) {
-    stop("Missing column 'rtime', 'mobility' or both")}
-  
   
   xTransf <- x
   xTransf$rtime <- convertMtime(xTransf$rtime/60, 
@@ -222,13 +209,8 @@ setMethod(
 
 .transformOnDiskMSnExp <- function(x, marker, ...) {
   ## sanity checks
-  if (!class(x) %in% c("OnDiskMSnExp"))
-    stop("'x' needs to be of class 'OnDistMSnExp' but not class '", 
-         class(x),"'")
-  if (missing(marker)) {
-    stop("Missing data.frame 'marker' with marker information")}
-  if (!all(c("rtime","mobility","fileIdx") %in% colnames(marker))) {
-    stop("Missing column 'rtime', 'mobility', 'fileIdx' or all")}
+  if (!all(c("fileIdx") %in% colnames(marker))) {
+    stop("Missing column 'fileIdx'")}
   
   xTransf <- x
   
