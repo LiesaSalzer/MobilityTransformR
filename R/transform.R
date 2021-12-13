@@ -91,7 +91,7 @@
 #'
 #'@export
 
-mobilityTransform <- function(x, marker, ...) {
+mobilityTransform <- function(x, marker, tR, U, L) {
   
   ## sanity checks
   if (!class(x) %in% c("numeric","Spectra","OnDiskMSnExp")) 
@@ -106,18 +106,18 @@ mobilityTransform <- function(x, marker, ...) {
   if (is(x, "numeric")) {
     FUN = .transformNumeric
     FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
+    do.call(FUN, list(x = x, marker = marker, tR, U, L))
   }
   else if (is(x, "Spectra")) {
     FUN = .transformSpectra
     FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
+    do.call(FUN, list(x = x, marker = marker, tR, U, L))
   }
   
   else if (is(x, "OnDiskMSnExp")) {
     FUN = .transformOnDiskMSnExp
     FUN <- match.fun(FUN)
-    do.call(FUN, list(x = x, marker = marker, ...))
+    do.call(FUN, list(x = x, marker = marker, tR, U, L))
   }
   
   
@@ -141,11 +141,11 @@ mobilityTransform <- function(x, marker, ...) {
 #' transformNumeric(x = rtime, marker = marker)
 #' transformNumeric(x = rtime, marker = marker[-1,], U = 30, L = 90)
 #' 
-.transformNumeric <- function(x, marker, ...) {
+.transformNumeric <- function(x, marker, tR, U, L) {
 
   convertMtime(x/60, 
                rtime = marker$rtime/60, 
-               mobility = marker$mobility, ...)
+               mobility = marker$mobility, tR, U, L)
   
 }
 
@@ -168,12 +168,12 @@ mobilityTransform <- function(x, marker, ...) {
 #'                      mobility = c(0, 2000))
 #' .transformSpectra(x = spectra_data, marker = marker)
 
-.transformSpectra <- function(x, marker, ...) {
+.transformSpectra <- function(x, marker, tR, U, L) {
   
   xTransf <- x
   xTransf$rtime <- convertMtime(xTransf$rtime/60, 
                             rtime = marker$rtime/60, 
-                            mobility = marker$mobility, ...)
+                            mobility = marker$mobility, tR, U, L)
   
   ## Data needs to be ordered by the migration time and spectrum IDs needs to 
   ## be removed to prevent errors in xcms 
@@ -207,7 +207,7 @@ mobilityTransform <- function(x, marker, ...) {
 #'                      
 #' .transformOnDiskMSnExp(x = raw_data, marker = marker)
 
-.transformOnDiskMSnExp <- function(x, marker, ...) {
+.transformOnDiskMSnExp <- function(x, marker, tR, U, L) {
   ## sanity checks
   if (!all(c("fileIdx") %in% colnames(marker))) {
     stop("Missing column 'fileIdx'")}
@@ -221,7 +221,7 @@ mobilityTransform <- function(x, marker, ...) {
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
       convertMtime(x = rt_file[[i]]/60, 
                    rtime = marker[marker$fileIdx == i,]$rtime/60, 
-                   mobility = marker[marker$fileIdx == i,]$mobility, ...)
+                   mobility = marker[marker$fileIdx == i,]$mobility, tR, U, L)
     
     ## Data needs to be ordered by the migration time and spectrum IDs needs to 
     ## be removed to prevent errors in xcms 
