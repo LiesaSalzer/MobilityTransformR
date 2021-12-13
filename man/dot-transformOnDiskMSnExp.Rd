@@ -15,3 +15,15 @@
 \description{
 Transformation of OnDiskMSnExp
 }
+\examples{
+fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
+package = "MobilityTransformationR")
+raw_data <- readMSData(files = fl,
+                       mode = "onDisk")
+marker <- data.frame(markerID = c("marker1", "marker2"),
+                     rtime = c(20,80),
+                     mobility = c(0, 2000),
+                     fileIdx = c(1,1))
+                     
+.transformOnDiskMSnExp(x = raw_data, marker = marker)
+}

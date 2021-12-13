@@ -66,7 +66,7 @@
 #' on the number of entries the transformation will be performed either on one or 
 #' both markers.
 #' 
-#'  @param ...
+#'@param ...
 #' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
 #' and `tR`.
 #'  
