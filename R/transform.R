@@ -144,11 +144,11 @@ mobilityTransform <- function(x, marker,
 #' transformNumeric(x = rtime, marker = marker)
 #' transformNumeric(x = rtime, marker = marker[-1,], U = 30, L = 90)
 #' 
-.transformNumeric <- function(x, marker, ...) {
+.transformNumeric <- function(x, marker, tR = tR, U = U, L = L) {
 
   convertMtime(x/60, 
                rtime = marker$rtime/60, 
-               mobility = marker$mobility, ...)
+               mobility = marker$mobility, tR = tR, U = U, L = L)
   
 }
 
@@ -171,12 +171,12 @@ mobilityTransform <- function(x, marker,
 #'                      mobility = c(0, 2000))
 #' .transformSpectra(x = spectra_data, marker = marker)
 
-.transformSpectra <- function(x, marker, ...) {
+.transformSpectra <- function(x, marker, tR = tR, U = U, L = L) {
   
   xTransf <- x
   xTransf$rtime <- convertMtime(xTransf$rtime/60, 
                             rtime = marker$rtime/60, 
-                            mobility = marker$mobility, ...)
+                            mobility = marker$mobility, tR = tR, U = U, L = L)
   
   ## Data needs to be ordered by the migration time and spectrum IDs needs to 
   ## be removed to prevent errors in xcms 
@@ -210,7 +210,7 @@ mobilityTransform <- function(x, marker,
 #'                      
 #' .transformOnDiskMSnExp(x = raw_data, marker = marker)
 
-.transformOnDiskMSnExp <- function(x, marker, ...) {
+.transformOnDiskMSnExp <- function(x, marker, tR = tR, U = U, L = L) {
   ## sanity checks
   if (!all(c("fileIdx") %in% colnames(marker))) {
     stop("Missing column 'fileIdx'")}
@@ -224,7 +224,7 @@ mobilityTransform <- function(x, marker,
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
       convertMtime(x = rt_file[[i]]/60, 
                    rtime = marker[marker$fileIdx == i,]$rtime/60, 
-                   mobility = marker[marker$fileIdx == i,]$mobility, ...)
+                   mobility = marker[marker$fileIdx == i,]$mobility, tR = tR, U = U, L = L)
     
     ## Data needs to be ordered by the migration time and spectrum IDs needs to 
     ## be removed to prevent errors in xcms 

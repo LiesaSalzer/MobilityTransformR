@@ -308,7 +308,8 @@ The resulting <code>Spectra</code>-objects can then also be exported as
 #load the test data as spectra object
 spectra_data <- Spectra(fl, backend = MsBackendMzR())
 
-spectra_mobility <- mobilityTransform(spectra_data, marker[marker$fileIdx == 1,])
+spectra_mobility <- mobilityTransform(spectra_data, 
+                                      marker[marker$fileIdx == 1,])
 
 
 # #Transformed data can then be exported again as .mzML file to use in xcms or 
