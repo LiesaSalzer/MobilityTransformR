@@ -224,12 +224,14 @@ mobilityTransform <- function(x, marker,
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
       convertMtime(x = rt_file[[i]]/60, 
                    rtime = marker[marker$fileIdx == i,]$rtime/60, 
-                   mobility = marker[marker$fileIdx == i,]$mobility, tR = tR, U = U, L = L)
+                   mobility = marker[marker$fileIdx == i,]$mobility, 
+                   tR = tR, U = U, L = L)
     
     ## Data needs to be ordered by the migration time and spectrum IDs needs to 
     ## be removed to prevent errors in xcms 
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
-      order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime)
+      order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime, 
+            decreasing = T)
     
   }
   
