@@ -4,7 +4,7 @@
 \alias{mobilityTransform}
 \title{Effective mobility scale transformation of CE-MS data}
 \usage{
-mobilityTransform(x, marker, ...)
+mobilityTransform(x, marker, tR = 0, U = numeric(), L = numeric())
 }
 \arguments{
 \item{x}{\code{numeric} migration time vector, \code{Spectra} -object, or \code{MSnOnDiskExp}-object
@@ -20,10 +20,9 @@ If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required
 stores the file Index.
 One or two entries are required per file for the transformation and depending
 on the number of entries the transformation will be performed either on one or
-both markers.
+both markers.}
 
-@param ...
-Additional parameters passed to \code{convertMtime}, as for example \code{L}, \code{U},
+\item{...}{Additional parameters passed to \code{convertMtime}, as for example \code{L}, \code{U},
 and \code{tR}.}
 }
 \value{
