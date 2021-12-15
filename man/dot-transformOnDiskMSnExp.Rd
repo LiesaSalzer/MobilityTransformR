@@ -4,7 +4,7 @@
 \alias{.transformOnDiskMSnExp}
 \title{Transformation of OnDiskMSnExp}
 \usage{
-.transformOnDiskMSnExp(x, marker, ...)
+.transformOnDiskMSnExp(x, marker, tR = tR, U = U, L = L)
 }
 \arguments{
 \item{x}{\code{OnDiskMSnExp}-object that stores the migration times in seconds.}

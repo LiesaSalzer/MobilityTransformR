@@ -4,7 +4,7 @@
 \alias{mobilityTransform}
 \title{Effective mobility scale transformation of CE-MS data}
 \usage{
-mobilityTransform(x, marker, ...)
+mobilityTransform(x, marker, tR = 0, U = numeric(), L = numeric())
 }
 \arguments{
 \item{x}{\code{numeric} migration time vector, \code{Spectra} -object, or \code{MSnOnDiskExp}-object

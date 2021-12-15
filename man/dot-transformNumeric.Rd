@@ -4,7 +4,7 @@
 \alias{.transformNumeric}
 \title{Transformation of numeric}
 \usage{
-.transformNumeric(x, marker, ...)
+.transformNumeric(x, marker, tR = tR, U = U, L = L)
 }
 \arguments{
 \item{x}{\code{numeric} migration time vector in seconds.}
