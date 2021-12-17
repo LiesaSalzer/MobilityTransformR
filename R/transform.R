@@ -192,8 +192,8 @@ setMethod(
   ## be removed to prevent errors in xcms 
   xTransf <- xTransf[order(rtime(xTransf))]
   xTransf$spectrumId <- NA
-  
-  return(xTransf)
+
+    return(applyProcessing(xTransf))
   
 }
 
@@ -243,12 +243,12 @@ setMethod(
     
     ## Data needs to be ordered by the migration time and spectrum IDs needs to 
     ## be removed to prevent errors in xcms 
-    fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
-      order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime)
-    
+  fData(xTransf)[fData(xTransf)$fileIdx == i,] <-
+    fData(xTransf)[fData(xTransf)$fileIdx == i,][order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime),]
+  
   }
   
-  fData(xTransf)$spectrumId <- NA
+ # fData(xTransf)$spectrumId <- NA
   
   return(xTransf)
   

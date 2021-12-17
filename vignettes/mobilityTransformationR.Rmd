@@ -68,7 +68,6 @@ analyzed in R or other software.
 The <code>MobilityTransformationR</code> package can be installed directly from 
 GitHub using 
 ```{r, message=FALSE, warning=FALSE, message=FALSE}
-options(timeout=9999999)
 devtools::install_github("LiesaSalzer/MobilityTransformationR")
 ```
 
@@ -307,15 +306,15 @@ The resulting <code>Spectra</code>-objects can then also be exported as
 <code>.mzML</code> for further processing in different software.
 ```{r, message=FALSE}
 #load the test data as spectra object
-spectra_data <- Spectra(fl, backend = MsBackendMzR())
+spectra_data <- Spectra(fl[1], backend = MsBackendMzR())
 
 spectra_mobility <- mobilityTransform(spectra_data, marker[marker$fileIdx == 1,])
 
 
 # #Transformed data can then be exported again as .mzML file to use in xcms or 
 # #other software
-# fl_mobility <- tempfile()
-# export(applyProcessing(spectra_data), MsBackendMzR(), file = fl_mobility)
+fl_mobility <- tempfile()
+export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
 
 ```
 
