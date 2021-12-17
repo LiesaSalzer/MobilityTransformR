@@ -130,7 +130,7 @@ In order to check the right <code>mz</code>-, and <code>mt</code>-window and
 Note that the plot functions are adapted from LC-MS package MSnbase, which has 
 "retention time" as default x-axis label. 
 
-```{r EOF marker, message=FALSE}
+```{r EOF marker, message=FALSE, warning=FALSE}
 # mz tolerance depends on MS mass accuracy 
 tolerance <- 0.005
 
@@ -154,7 +154,7 @@ wide enough to get the right Paracetamol-peaks in all files, because single
 migration times might change significantly due to EOF-fluctuations between 
 measurements. 
 
-```{r EOF marker getMT, message=FALSE}
+```{r EOF marker getMT, message=FALSE, warning=FALSE}
 # get the MT of paracetamol
 paracetamol <- getMtime(raw_data,
                         mz = mz_paracetamol, 
@@ -173,7 +173,7 @@ not sufficient or ambiguity detection.
 For such reasons procaine was added to the mixture as positively charged 
 secondary marker. 
 
-```{r charged marker, message=FALSE}
+```{r charged marker, message=FALSE, warning=FALSE}
 mz_procaine <- c(237.160303 - tolerance, 237.160303 + tolerance)
 mt_procaine <- c(300, 800)
 
@@ -308,7 +308,8 @@ The resulting <code>Spectra</code>-objects can then also be exported as
 #load the test data as spectra object
 spectra_data <- Spectra(fl[1], backend = MsBackendMzR())
 
-spectra_mobility <- mobilityTransform(spectra_data, marker[marker$fileIdx == 1,])
+spectra_mobility <- mobilityTransform(spectra_data, 
+                                      marker[marker$fileIdx == 1,])
 
 
 # #Transformed data can then be exported again as .mzML file to use in xcms or 
@@ -362,33 +363,7 @@ plot(chromatogram(lysine_mt_EIE),
      xlab = "MT (sec)")
 
 ```
-```{r amp, message=FALSE}
-# Example: Extract ion electropherogram (EIE) from lysine
-mz_AMP <- c(348.070913
- - tolerance, 348.070913
- + tolerance)
-mobilityRestriction <- c(-100, 100)
 
-
-# Extract ion electropherogram of compound
-AMP_EIE <-  mobility_data %>% 
-    filterMz(mz = mz_AMP) %>% 
-    filterRt(rt = mobilityRestriction)
-
-plot(chromatogram(AMP_EIE), 
-     main = expression(paste("AMP EIE - µ"[eff]," scale")), 
-     xlab = expression(paste("µ"[eff],"  (", frac("mm"^2,"kV min"),")"))
-     )
-
-# compare with extracted ion electropherogram of migration time scale
-AMP_mt_EIE <-  raw_data %>% 
-    filterMz(mz = mz_AMP) %>% filterRt(c(800,900))
-
-plot(chromatogram(AMP_mt_EIE),
-     main = "AMP EIE - MT scale", 
-     xlab = "MT (sec)")
-
-```
 
 # Session information
 

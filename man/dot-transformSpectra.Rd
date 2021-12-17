@@ -4,7 +4,7 @@
 \alias{.transformSpectra}
 \title{Transformation of Spectra}
 \usage{
-.transformSpectra(x, marker, ...)
+.transformSpectra(x, marker, tR = tR, U = U, L = L)
 }
 \arguments{
 \item{x}{\code{Spectra}-object that stores the migration times in seconds.}
