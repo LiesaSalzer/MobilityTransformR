@@ -68,7 +68,7 @@ analyzed in R or other software.
 The <code>MobilityTransformationR</code> package can be installed directly from 
 GitHub using 
 ```{r, message=FALSE, warning=FALSE, message=FALSE}
-devtools::install_github("LiesaSalzer/MobilityTransformationR", ref = "devel")
+devtools::install_github("LiesaSalzer/MobilityTransformationR")
 ```
 
 ## Load required libries
