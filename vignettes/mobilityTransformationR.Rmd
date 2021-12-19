@@ -296,6 +296,11 @@ same class.
 ```{r, message=FALSE}
 # Conversion of mt in OnDiskMSnExp objects
 mobility_data <- mobilityTransform(x = raw_data, marker = marker)
+
+#OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
+#copy = FALSE, (otherwise spectrum ordering will be wrong)
+fl_mobility_data <- tempfile()
+writeMSData(filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
 ```
 
 

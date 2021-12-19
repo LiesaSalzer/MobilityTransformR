@@ -229,22 +229,11 @@ mobilityTransform <- function(x, marker,
     
     ## Data needs to be ordered by the migration time to 
     ## be removed to prevent errors in xcms 
-<<<<<<< HEAD
   fData(xTransf)[fData(xTransf)$fileIdx == i,] <-
     fData(xTransf)[fData(xTransf)$fileIdx == i,][order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime),]
-  
-  }
-  
- # fData(xTransf)$spectrumId <- NA
-=======
-    fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
-      order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime, 
-            decreasing = T)
-    
-  }
 
->>>>>>> 7a5e980fbf8be6ac58ba28f2664b1eaa329bee1e
+  }
   
   return(xTransf)
-  
+
 }

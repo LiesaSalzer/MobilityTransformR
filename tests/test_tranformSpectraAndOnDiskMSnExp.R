@@ -1,5 +1,10 @@
 ## Control tests 
 
+fl_mobility_data <- tempfile()
+writeMSData( filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
+test_data = readMSData(files = fl_mobility_data, mode = "onDisk")
+
+
 mobility_Spectra_transform <- readMSData(files = fl_mobility, mode = "onDisk")
 
 test_data = mobility_Spectra_transform
