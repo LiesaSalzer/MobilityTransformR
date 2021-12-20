@@ -3,7 +3,6 @@
 
 test_data = readMSData(files = fl_mobility_data, mode = "onDisk")
 
-
 test_data <- readMSData(files = fl_mobility, mode = "onDisk")
 
 test_data = mobility_data
@@ -32,7 +31,7 @@ mfp <- MatchedFilterParam(binSize =1, snthresh = 3)
 mq <- MassifquantParam(peakwidth = c(10,100), snthresh = 100, withWave = T)
 
 xdata <- findChromPeaks(EIE_paracetamol, 
-                        param = mq)
+                        param = mfp)
 
 
 # test if peaks were merged

@@ -7,8 +7,6 @@
 #' @description
 #' The function `getMtime` searches the migration time (mt) of a known compound 
 #' within a specified mz and mt range (`mz` and `mt`). 
-#' Also, a minimum intensity value `minInt` of the compound must be provided to 
-#' filter from noise.
 #'
 #' @param x
 #' `OnDiskMSnExp` object, containing CE-MS(/MS) data from a single file (e.g.
@@ -30,7 +28,7 @@
 #' 
 #' @param param
 #' `method`, from xcms that defined how peaks will be picked. The default is 
-#' `MassifquantParam(peakwidth = c(20,80), snthresh = 100, withWave = TRUE)`
+#' `MatchedFilterParam(binSize = 1, snthresh = 100)`
 #'
 #' @details
 #' `getMtime` uses CE-MS data stored in `OnDiskMSnExp` objects to search for the 
@@ -54,19 +52,15 @@
 #'
 #'@export
 getMtime <- function(x, mz = numeric(), mt = numeric(), 
-                     param = MassifquantParam(peakwidth = c(20,80), 
-                                              snthresh = 100, 
-                                              withWave = TRUE),
+                     param = MatchedFilterParam(binSize = 1, snthresh = 50),
                      ...) {
 ## sanity checks
 if (!is(x, "OnDiskMSnExp")) 
   stop("'x' is not of class 'OnDiskMSnExp'!")
 
-if (missing(mz) | missing(mt) | missing(minInt)) 
-  stop("Arguments 'mz', 'mt', and 'minInt' are required!")
+if (missing(mz) | missing(mt)) 
+  stop("Arguments 'mz' and 'mt' are required!")
 
-if (length(minInt) != 1) 
-  stop("'minInt' needs to be of length 1")
 
   rt_df <- data.frame(rtime = integer(),
                       fileIdx = integer())
@@ -74,9 +68,7 @@ if (length(minInt) != 1)
   for (i in unique(fromFile(x))) {
     x_i <- filterFile(x, i)
     
-    df <- findChromPeaks(
-      chromatogram(filterMz(x_i, mz = mz) %>% filterRt(rt = mt), 
-                   aggregationFun = "max"), 
+    df <- findChromPeaks(filterMz(x_i, mz = mz) %>% filterRt(rt = mt), 
       param = param
     ) %>% chromPeaks() %>% 
       as.data.frame()

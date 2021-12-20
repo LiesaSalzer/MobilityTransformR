@@ -158,8 +158,7 @@ measurements.
 # get the MT of paracetamol
 paracetamol <- getMtime(raw_data,
                         mz = mz_paracetamol, 
-                        mt = mt_paracetamol, 
-                        minInt = 5000)
+                        mt = mt_paracetamol)
 paracetamol
 
 ```
@@ -188,8 +187,7 @@ plot(chromatogram(marker_EIE),
 
 procaine <- getMtime(raw_data,
                         mz = mz_procaine, 
-                        mt = mt_procaine, 
-                        minInt = 5000)
+                        mt = mt_procaine)
 
 procaine
 ```

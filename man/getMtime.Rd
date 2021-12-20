@@ -8,7 +8,7 @@ getMtime(
   x,
   mz = numeric(),
   mt = numeric(),
-  param = MassifquantParam(peakwidth = c(20, 80), snthresh = 100, withWave = TRUE),
+  param = MatchedFilterParam(binSize = 1, snthresh = 50),
   ...
 )
 }
@@ -29,7 +29,7 @@ Use a narrow \code{mt} range, to to avoid that other components with the same mz
 and different mt are being picked.}
 
 \item{param}{\code{method}, from xcms that defined how peaks will be picked. The default is
-\code{MassifquantParam(peakwidth = c(20,80), snthresh = 100, withWave = TRUE)}}
+\code{MatchedFilterParam(binSize = 1, snthresh = 100)}}
 }
 \value{
 \code{data.frame} with two columns "rtime" storing the migration time in sec,
@@ -39,8 +39,6 @@ the number of input files.
 \description{
 The function \code{getMtime} searches the migration time (mt) of a known compound
 within a specified mz and mt range (\code{mz} and \code{mt}).
-Also, a minimum intensity value \code{minInt} of the compound must be provided to
-filter from noise.
 }
 \details{
 \code{getMtime} uses CE-MS data stored in \code{OnDiskMSnExp} objects to search for the
