@@ -297,10 +297,10 @@ same class.
 # Conversion of mt in OnDiskMSnExp objects
 mobility_data <- mobilityTransform(x = raw_data, marker = marker)
 
-#OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
-#copy = FALSE, (otherwise spectrum ordering will be wrong)
-fl_mobility_data <- tempfile()
-writeMSData(filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
+# #OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
+# #copy = FALSE, (otherwise spectrum ordering will be wrong)
+# fl_mobility_data <- tempfile()
+# writeMSData(filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
 ```
 
 
@@ -319,8 +319,8 @@ spectra_mobility <- mobilityTransform(spectra_data,
 
 # #Transformed data can then be exported again as .mzML file to use in xcms or 
 # #other software
-fl_mobility <- tempfile()
-export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
+# fl_mobility <- tempfile()
+# export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
 
 ```
 

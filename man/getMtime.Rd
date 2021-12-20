@@ -8,9 +8,7 @@ getMtime(
   x,
   mz = numeric(),
   mt = numeric(),
-  minInt = numeric(),
-  peakwidth = c(10, 150),
-  mzdiff = 0.01,
+  param = MassifquantParam(peakwidth = c(20, 80), snthresh = 100, withWave = TRUE),
   ...
 )
 }
@@ -30,8 +28,8 @@ migration tame range of the compound.
 Use a narrow \code{mt} range, to to avoid that other components with the same mz
 and different mt are being picked.}
 
-\item{minInt}{\code{numeric}, minimum intensity of the compound of which the migration time is
-going to be determined.}
+\item{param}{\code{method}, from xcms that defined how peaks will be picked. The default is
+\code{MassifquantParam(peakwidth = c(20,80), snthresh = 100, withWave = TRUE)}}
 }
 \value{
 \code{data.frame} with two columns "rtime" storing the migration time in sec,

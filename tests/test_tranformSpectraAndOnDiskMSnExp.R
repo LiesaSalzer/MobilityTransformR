@@ -1,13 +1,10 @@
 ## Control tests 
 
-fl_mobility_data <- tempfile()
-writeMSData( filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
+
 test_data = readMSData(files = fl_mobility_data, mode = "onDisk")
 
 
-mobility_Spectra_transform <- readMSData(files = fl_mobility, mode = "onDisk")
-
-test_data = mobility_Spectra_transform
+test_data <- readMSData(files = fl_mobility, mode = "onDisk")
 
 test_data = mobility_data
 
@@ -30,10 +27,13 @@ plot(chromatogram(EIE_paracetamol),
 
 
 # align cwp 
-cwp <- CentWaveParam(peakwidth = c(20, 150), noise = 1000, fitgauss = F)
+cwp <- CentWaveParam(peakwidth = c(20, 150), noise = 1000, )
+mfp <- MatchedFilterParam(binSize =1, snthresh = 3)
+mq <- MassifquantParam(peakwidth = c(10,100), snthresh = 100, withWave = T)
 
 xdata <- findChromPeaks(EIE_paracetamol, 
-                        param = cwp)
+                        param = mq)
+
 
 # test if peaks were merged
 plot(chromatogram(xdata))

@@ -28,9 +28,9 @@
 #' Use a narrow `mt` range, to to avoid that other components with the same mz 
 #' and different mt are being picked. 
 #' 
-#' @param minInt
-#' `numeric`, minimum intensity of the compound of which the migration time is 
-#' going to be determined. 
+#' @param param
+#' `method`, from xcms that defined how peaks will be picked. The default is 
+#' `MassifquantParam(peakwidth = c(20,80), snthresh = 100, withWave = TRUE)`
 #'
 #' @details
 #' `getMtime` uses CE-MS data stored in `OnDiskMSnExp` objects to search for the 
@@ -54,9 +54,10 @@
 #'
 #'@export
 getMtime <- function(x, mz = numeric(), mt = numeric(), 
-                     minInt = numeric(), 
-                     peakwidth = c(10, 150), 
-                     mzdiff = 0.01, ...) {
+                     param = MassifquantParam(peakwidth = c(20,80), 
+                                              snthresh = 100, 
+                                              withWave = TRUE),
+                     ...) {
 ## sanity checks
 if (!is(x, "OnDiskMSnExp")) 
   stop("'x' is not of class 'OnDiskMSnExp'!")
@@ -76,16 +77,12 @@ if (length(minInt) != 1)
     df <- findChromPeaks(
       chromatogram(filterMz(x_i, mz = mz) %>% filterRt(rt = mt), 
                    aggregationFun = "max"), 
-      param = CentWaveParam(peakwidth = peakwidth, noise = minInt, 
-                            mzdiff = mzdiff)
+      param = param
     ) %>% chromPeaks() %>% 
       as.data.frame()
     
     
-    if (length(df$rt) == 0) 
-      stop("No peaks have been found, align input parameters")
-    
-    else if (length(df$rt) > 1) 
+    if (length(df$rt) != 1) 
       stop(length(df$rt), " peaks have been found in file ", i,
            ", align input parameters")
     
