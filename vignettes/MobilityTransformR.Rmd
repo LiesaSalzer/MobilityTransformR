@@ -99,10 +99,10 @@ The test data is loaded using the <code>readMSData()</code> function from
 
 ```{r data, message=FALSE}
 fl <- list.files(system.file("extdata/", package = "MobilityTransformR"), 
-                 pattern = ".mzML", full.names = T)
+                 pattern = ".RData", full.names = T)
 
 # Load mzXML data with MSnBase
-raw_data <- readMSData(files = fl, mode = "onDisk")
+load(fl)
 ```
 
 # Get Marker Migration Times
@@ -288,7 +288,7 @@ marker <- rbind(marker, procaine)
 
 
 ### Effective mobility transformation of OnDiskMSnExp objects
-The migration time scale of <code>raw_data</code> is transformed, returning the 
+The migration time scale of <code>raw_data2</code> is transformed, returning the 
 same class.
 
 ```{r, message=FALSE}
@@ -359,7 +359,8 @@ plot(chromatogram(lysine_EIE),
 
 # compare with extracted ion electropherogram of migration time scale
 lysine_mt_EIE <-  raw_data |> 
-    filterMz(mz = mz_lysine) 
+    filterMz(mz = mz_lysine) |>
+  filterRt(c(200, 600))
 
 plot(chromatogram(lysine_mt_EIE),
      main = "Lysine EIE - MT scale", 
