@@ -68,9 +68,9 @@ if (missing(mz) | missing(mt))
   for (i in unique(fromFile(x))) {
     x_i <- filterFile(x, i)
     
-    df <- findChromPeaks(filterMz(x_i, mz = mz) %>% filterRt(rt = mt), 
+    df <- findChromPeaks(filterMz(x_i, mz = mz) |> filterRt(rt = mt), 
       param = param
-    ) %>% chromPeaks() %>% 
+    ) |> chromPeaks() |> 
       as.data.frame()
     
     

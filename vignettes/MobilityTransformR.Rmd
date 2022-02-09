@@ -19,7 +19,7 @@ BiocStyle::markdown()
 ```
 
 **Package**: `MobilityTransformR`<br />
-**Authors**: `r packageDescription("MobilityTransformR")[["Author"]] `<br />
+**Authors**: `r packageDescription("MobilityTransformR")["Author"] `<br />
 **Last modified:** `r file.info("MobilityTransformR.Rmd")$mtime`<br />
 **Compiled**: `r date()`
 
@@ -138,7 +138,7 @@ tolerance <- 0.005
 mz_paracetamol <- c(152.071154 - tolerance, 152.071154 + tolerance)
 mt_paracetamol <- c(600, 1500)
 
-marker_EIE <-  raw_data %>% filterMz(mz = mz_paracetamol) %>% 
+marker_EIE <-  raw_data |> filterMz(mz = mz_paracetamol) |> 
     filterRt(rt = mt_paracetamol)
 
 plot(chromatogram(marker_EIE), 
@@ -176,7 +176,7 @@ secondary marker.
 mz_procaine <- c(237.160303 - tolerance, 237.160303 + tolerance)
 mt_procaine <- c(300, 800)
 
-marker_EIE <-  raw_data %>% filterMz(mz = mz_procaine) %>% 
+marker_EIE <-  raw_data |> filterMz(mz = mz_procaine) |> 
     filterRt(rt = mt_procaine)
 
 plot(chromatogram(marker_EIE), 
@@ -348,8 +348,8 @@ mobilityRestriction <- c(-200, 2500)
 
 
 # Extract ion electropherogram of compound
-lysine_EIE <-  mobility_data %>% 
-    filterMz(mz = mz_lysine) %>% 
+lysine_EIE <-  mobility_data |> 
+    filterMz(mz = mz_lysine) |> 
     filterRt(rt = mobilityRestriction)
 
 plot(chromatogram(lysine_EIE), 
@@ -358,7 +358,7 @@ plot(chromatogram(lysine_EIE),
      )
 
 # compare with extracted ion electropherogram of migration time scale
-lysine_mt_EIE <-  raw_data %>% 
+lysine_mt_EIE <-  raw_data |> 
     filterMz(mz = mz_lysine) 
 
 plot(chromatogram(lysine_mt_EIE),
