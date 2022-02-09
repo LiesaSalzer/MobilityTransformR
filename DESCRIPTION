@@ -1,4 +1,4 @@
-Package: MobilityTransformationR
+Package: MobilityTransformR
 Title: Effective mobility scale transformation of CE-MS(/MS) data 
 Version: 0.99.0
 Authors@R: c(person(given = "Liesa", family = "Salzer",
@@ -6,7 +6,7 @@ Authors@R: c(person(given = "Liesa", family = "Salzer",
            email = "liesa.salzer@helmholtz-munich.de",
            comment = c(ORCID = "0000-0003-0761-0656"))
            )
-Description: MobilityTransformationR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
+Description: MobilityTransformR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
 Depends:
     xcms,
     MSnbase,
@@ -27,8 +27,8 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
-BugReports: https://github.com/LiesaSalzer/MobilityTransformationR/issues
-URL: https://github.com/LiesaSalzer/MobilityTransformationR
+BugReports: https://github.com/LiesaSalzer/MobilityTransformR/issues
+URL: https://github.com/LiesaSalzer/MobilityTransformR
 biocViews: Infrastructure, Metabolomics, MassSpectrometry, CapillaryElectrophoresis
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

@@ -164,7 +164,7 @@ mobilityTransform <- function(x, marker,
 #' 
 #' @example 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
-#' package = "MobilityTransformationR")
+#' package = "MobilityTransformR")
 #' spectra_data <- Spectra(fl, backend = MsBackendMzR())
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
@@ -200,7 +200,7 @@ mobilityTransform <- function(x, marker,
 #' 
 #' @examples 
 #' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
-#' package = "MobilityTransformationR")
+#' package = "MobilityTransformR")
 #' raw_data <- readMSData(files = fl,
 #'                        mode = "onDisk")
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
