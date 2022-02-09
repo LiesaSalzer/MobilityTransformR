@@ -1,34 +1,31 @@
 Package: MobilityTransformR
 Title: Effective mobility scale transformation of CE-MS(/MS) data 
 Version: 0.99.0
-Authors@R: c(person(given = "Liesa", family = "Salzer",
-           role = c("aut", "cre"),
+Description: MobilityTransformR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. It provides functionality to determine the migration times from mobility markers that have been added to the analysis and performs the transformation based on these markers. MobilityTransformR supports the conversion of numeric vectors, Spectra-objects, and MSnOnDiskExp.
+Authors@R: person("Liesa", "Salzer",
            email = "liesa.salzer@helmholtz-munich.de",
+           role = c("cre", "aut"),
            comment = c(ORCID = "0000-0003-0761-0656"))
-           )
-Description: MobilityTransformR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. 
 Depends:
-    xcms,
-    MSnbase,
-    MetaboCoreUtils,
-    magrittr
+    MSnbase
 Imports:
-    methods    
+    methods,
+    xcms,
+    MetaboCoreUtils,
+    magrittr,
+    Spectra
 Suggests:
     testthat,
     knitr (>= 1.1.0),
     roxygen2,
     BiocStyle (>= 2.5.19),
     rmarkdown
-Remotes:
-   RforMassSpectrometry/Spectra,
-   sneumann/MsBackendMsp
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 VignetteBuilder: knitr
 BugReports: https://github.com/LiesaSalzer/MobilityTransformR/issues
 URL: https://github.com/LiesaSalzer/MobilityTransformR
-biocViews: Infrastructure, Metabolomics, MassSpectrometry, CapillaryElectrophoresis
+biocViews: Infrastructure, Metabolomics, MassSpectrometry
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
