@@ -99,10 +99,10 @@ The test data is loaded using the <code>readMSData()</code> function from
 
 ```{r data, message=FALSE}
 fl <- list.files(system.file("extdata/", package = "MobilityTransformR"), 
-                 pattern = ".RData", full.names = T)
+                 pattern = ".mzML", full.names = T)
 
 # Load mzXML data with MSnBase
-load(fl)
+raw_data <- readMSData(files = fl, mode = "onDisk")
 ```
 
 # Get Marker Migration Times
