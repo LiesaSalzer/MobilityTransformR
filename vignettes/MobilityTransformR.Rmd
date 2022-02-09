@@ -1,15 +1,15 @@
 ---
-title: "Description and usage of MobilityTransformationR"
+title: "Description and usage of MobilityTransformR"
 
 output:
     BiocStyle::html_document:
         toc_float: true
 vignette: >
-    %\VignetteIndexEntry{Description and usage of MobilityTransformationR}
+    %\VignetteIndexEntry{Description and usage of MobilityTransformR}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
-    %\VignettePackage{MobilityTransformationR}
-    %\VignetteDepends{MobilityTransformationR,xcms,BiocStyle}
+    %\VignettePackage{MobilityTransformR}
+    %\VignetteDepends{MobilityTransformR,xcms,BiocStyle}
 bibliography: references.bib
 csl: biomed-central.csl
 ---
@@ -18,9 +18,9 @@ csl: biomed-central.csl
 BiocStyle::markdown()
 ```
 
-**Package**: `MobilityTransformationR`<br />
-**Authors**: `r packageDescription("MobilityTransformationR")[["Author"]] `<br />
-**Last modified:** `r file.info("MobilityTransformationR.Rmd")$mtime`<br />
+**Package**: `MobilityTransformR`<br />
+**Authors**: `r packageDescription("MobilityTransformR")[["Author"]] `<br />
+**Last modified:** `r file.info("MobilityTransformR.Rmd")$mtime`<br />
 **Compiled**: `r date()`
 
 ```{r, echo = FALSE, message = FALSE}
@@ -45,13 +45,13 @@ Effective mobility transformation for CE-MS data is not as straightforward as
 in CE-UV and until now and to our knowledge there is no implementation in R that 
 performs effective mobility transformation of CE-MS(/MS) data. 
 
-As a model for the <code>MobilityTransformationR</code> package, we have taken 
+As a model for the <code>MobilityTransformR</code> package, we have taken 
 the recently developed ROMANCE software @ROMANCE2018, which is an open-source 
 software that transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. 
 However, it is not in the R environment and moreover the outputs are two 
 separate files, each for positive and negative mobilities. 
 
-We developed the <code>MobilityTransformationR</code> package to perform the 
+We developed the <code>MobilityTransformR</code> package to perform the 
 mobility transformation of CE-MS/MS data in the R environment. Also, different 
 to ROMANCE, the output will be a single file containing both, the positive and 
 negative effective mobilities. 
@@ -65,19 +65,19 @@ analyzed in R or other software.
 # Setup
 
 ## Installation
-The <code>MobilityTransformationR</code> package can be installed directly from 
+The <code>MobilityTransformR</code> package can be installed directly from 
 GitHub using 
 ```{r, message=FALSE, warning=FALSE, message=FALSE}
-devtools::install_github("LiesaSalzer/MobilityTransformationR")
+devtools::install_github("LiesaSalzer/MobilityTransformR")
 ```
 
 ## Load required libries
-<code>MobilityTransformationR</code> integrates functions from different 
+<code>MobilityTransformR</code> integrates functions from different 
 libraries.
 
 ```{r libraries, message=FALSE, warning=FALSE}
 # load required libraries
-library(MobilityTransformationR)
+library(MobilityTransformR)
 library(xcms)
 library(Spectra)
 ```
@@ -85,7 +85,7 @@ library(Spectra)
 
 ## Load test data
 
-To showcase the functionality of the <code>MobilityTransformationR</code> 
+To showcase the functionality of the <code>MobilityTransformR</code> 
 package two CE-MS test sets containing a mixtures of different metabolites at 
 10 ppm concentration, acquired at positive CE polarity and positive ionization 
 mode is used. Moreover, Paracetamol was added as EOF marker in a final 
@@ -98,7 +98,7 @@ The test data is loaded using the <code>readMSData()</code> function from
 <code>MSnbase</code>.
 
 ```{r data, message=FALSE}
-fl <- list.files(system.file("extdata/", package = "MobilityTransformationR"), 
+fl <- list.files(system.file("extdata/", package = "MobilityTransformR"), 
                  pattern = ".mzML", full.names = T)
 
 # Load mzXML data with MSnBase
