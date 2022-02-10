@@ -141,8 +141,7 @@ mobilityTransform <- function(x, marker,
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' transformNumeric(x = rtime, marker = marker)
-#' transformNumeric(x = rtime, marker = marker[-1,], U = 30, L = 90)
+#' transformNumeric(x = rtime, marker = marker), tR = 3, U = 30, L = 90)
 #' 
 .transformNumeric <- function(x, marker, tR = tR, U = U, L = L) {
 
@@ -163,13 +162,13 @@ mobilityTransform <- function(x, marker,
 #' `Spectra`-Object that stores the effective mobility in mm^2 / (kV * min). 
 #' 
 #' @example 
-#' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
+#' fl <- system.file("extdata/CEMS_10ppm.mzML", 
 #' package = "MobilityTransformR")
 #' spectra_data <- Spectra(fl, backend = MsBackendMzR())
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' .transformSpectra(x = spectra_data, marker = marker)
+#' .transformSpectra(x = spectra_data, marker = marker, tR = 3, U = 30, L = 90)
 
 .transformSpectra <- function(x, marker, tR = tR, U = U, L = L) {
   
@@ -199,7 +198,7 @@ mobilityTransform <- function(x, marker,
 #' 
 #' 
 #' @examples 
-#' fl <- system.file("extdata/CEMS_metabolites_10ppm_pos_centroidedData.mzML", 
+#' fl <- system.file("extdata/CEMS_10ppm.mzML", 
 #' package = "MobilityTransformR")
 #' raw_data <- readMSData(files = fl,
 #'                        mode = "onDisk")
@@ -208,7 +207,7 @@ mobilityTransform <- function(x, marker,
 #'                      mobility = c(0, 2000),
 #'                      fileIdx = c(1,1))
 #'                      
-#' .transformOnDiskMSnExp(x = raw_data, marker = marker)
+#' .transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
 
 .transformOnDiskMSnExp <- function(x, marker, tR = tR, U = U, L = L) {
   ## sanity checks

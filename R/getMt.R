@@ -50,6 +50,16 @@
 #'@importFrom  xcms findChromPeaks 
 #'@importFrom  xcms chromPeaks
 #'
+#' @examples 
+#' fl <- system.file("extdata/CEMS_10ppm.mzML", 
+#' package = "MobilityTransformR")
+#' raw_data <- readMSData(files = fl,
+#'                        mode = "onDisk")
+#'# [M+H]+ of paracetamol: mz = 152.071154
+#' mz_paracetamol <- c(152.071154 - 0.005, 152.071154 + 0.005)
+#' mt_paracetamol <- c(600, 900)                      
+#' getMtime(raw_data, mz = mz_paracetamol, mt = mt_paracetamol)                       
+#'                        
 #'@export
 getMtime <- function(x, mz = numeric(), mt = numeric(), 
                      param = MatchedFilterParam(binSize = 1, snthresh = 50),

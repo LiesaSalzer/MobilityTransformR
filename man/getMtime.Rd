@@ -49,6 +49,17 @@ the mt-range \code{mt}, where the compound is expected to migrate.
 The migration time is determined by applying the peak picking algorithm from
 xcms.
 }
+\examples{
+fl <- system.file("extdata/CEMS_10ppm.mzML", 
+package = "MobilityTransformR")
+raw_data <- readMSData(files = fl,
+                       mode = "onDisk")
+# [M+H]+ of paracetamol: mz = 152.071154
+mz_paracetamol <- c(152.071154 - 0.005, 152.071154 + 0.005)
+mt_paracetamol <- c(600, 900)                      
+getMtime(raw_data, mz = mz_paracetamol, mt = mt_paracetamol)                       
+                       
+}
 \author{
 Liesa Salzer
 }

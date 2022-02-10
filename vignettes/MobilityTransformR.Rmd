@@ -67,7 +67,7 @@ analyzed in R or other software.
 ## Installation
 The <code>MobilityTransformR</code> package can be installed directly from 
 GitHub using 
-```{r, message=FALSE, warning=FALSE, message=FALSE}
+```{r, message=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
 devtools::install_github("LiesaSalzer/MobilityTransformR")
 ```
 
@@ -102,7 +102,8 @@ fl <- list.files(system.file("extdata/", package = "MobilityTransformR"),
                  pattern = ".mzML", full.names = T)
 
 # Load mzXML data with MSnBase
-raw_data <- readMSData(files = fl, mode = "onDisk")
+raw_data <- readMSData(files = c("D:/Software/R/Packages/MobilityTransformR/inst/extdata/CEMS_10ppm.mzML", 
+                               "D:/Software/R/Packages/MobilityTransformR/inst/extdata/CEMS_25ppm.mzML"), mode = "onDisk")
 ```
 
 # Get Marker Migration Times
@@ -136,7 +137,7 @@ tolerance <- 0.005
 
 # [M+H]+ of paracetamol: mz = 152.071154
 mz_paracetamol <- c(152.071154 - tolerance, 152.071154 + tolerance)
-mt_paracetamol <- c(600, 1500)
+mt_paracetamol <- c(600, 900)
 
 marker_EIE <-  raw_data |> filterMz(mz = mz_paracetamol) |> 
     filterRt(rt = mt_paracetamol)
@@ -174,7 +175,7 @@ secondary marker.
 
 ```{r charged marker, message=FALSE, warning=FALSE}
 mz_procaine <- c(237.160303 - tolerance, 237.160303 + tolerance)
-mt_procaine <- c(300, 800)
+mt_procaine <- c(400, 800)
 
 marker_EIE <-  raw_data |> filterMz(mz = mz_procaine) |> 
     filterRt(rt = mt_procaine)
@@ -344,7 +345,7 @@ mobilities of single compounds by extracting their EIE as for example Lysine
 mz_lysine <- c(147.112806
  - tolerance, 147.112806
  + tolerance)
-mobilityRestriction <- c(-200, 2500)
+mobilityRestriction <- c(1000, 2500)
 
 
 # Extract ion electropherogram of compound
@@ -360,7 +361,7 @@ plot(chromatogram(lysine_EIE),
 # compare with extracted ion electropherogram of migration time scale
 lysine_mt_EIE <-  raw_data |> 
     filterMz(mz = mz_lysine) |>
-  filterRt(c(200, 600))
+  filterRt(c(400, 600))
 
 plot(chromatogram(lysine_mt_EIE),
      main = "Lysine EIE - MT scale", 
