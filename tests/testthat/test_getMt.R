@@ -2,36 +2,53 @@
 data("CEMS_OnDisk", package = "MobilityTransformR")
 
 # [M+H]+ of paracetamol: mz = 152.071154
-mz_paracetamol <- c(152.071154 - 0.005, 152.071154 + 0.005)
+mz_paracetamol <- c(152.065154, 152.076154)
 mt_paracetamol <- c(600, 900)
-getMtime(subset, mz = mz_paracetamol, mt = mt_paracetamol)
+
 
 test_that("Getting migration time works", {
+  mt <- getMtime(raw_data, mz = mz_paracetamol, mt = mt_paracetamol)
+  expect_true(is.data.frame(mt))
+  expect_equal(colnames(mt), c("rtime", "fileIdx"))
+  expect_equal(dim(mt), c(1, 2))
+  expect_true(is.numeric(mt$rtime))
+  expect_true(is.numeric(mt$fileIdx))
+  expect_equal(mt[1,1], 840.796, tolerance = 1e-06)
+  expect_equal(mt[1,2], 1)
   
-  ## load test data
-  rtime <- c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
-  marker <- c(20, 80)
-  mobility <- c(0, 2000)
-  marker_s <- 20
-  mobility_s <- 0
+  expect_error(getMtime(NA, mz = mz_paracetamol, mt = mt_paracetamol),
+               "'x' is not of class 'OnDiskMSnExp'!")
+  expect_error(getMtime(raw_data, mz = mz_paracetamol),
+               "Arguments 'mz' and 'mt' are required!")
+  expect_error(getMtime(raw_data, mt = mt_paracetamol),
+               "Arguments 'mz' and 'mt' are required!")
+  expect_error(getMtime(raw_data, mz = c(150,155), mt = mt_paracetamol),
+               "3 peaks have been found in file 1, align input parameters")
+  expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), mt = mt_paracetamol),
+               "0 peaks have been found in file 1, align input parameters")
   
-  mu_s <- convertMTime(rtime, marker_s, mobility_s, U = 30, L = 90)
-  mu_m <-  convertMTime(rtime, marker, mobility)
+})
+
+test_that("Getting migration time with CentWaveParam works", {
+  mt_cwp <- getMtime(raw_data, mz = c(152,152.2), mt = mt_paracetamol, 
+                     param = xcms::CentWaveParam())
   
-  expect_equal(length(mu_s), length(rtime))
-  expect_equal(length(mu_m), length(rtime))
-  expect_true(is.numeric(mu_s))
-  expect_true(is.numeric(mu_m))
-  expect_equal(sum(mu_s), -55.91786, tolerance = 1e-06)
-  expect_equal(sum(mu_m), 11045.5, tolerance = 1e-06)
-  expect_error(convertMTime(x = rtime, rtime = marker_s, mobility = mobility),
-               "'rtime' and 'mobility' need to have the same length")
-  expect_error(convertMTime(x = rtime, rtime = c(1,2,3), mobility = c(20,40,60)),
-               "'rtime' and 'mobility' are expected to have either length 1 or 2 but not 3")
-  expect_warning(convertMTime(x = rtime, rtime = marker, 
-                              mobility = mobility, tR = c(3,4)),
-                 "Length or parameter 'tR' > 1 but using only first element")
-  expect_error(convertMTime(x = rtime, rtime = marker_s, mobility = mobility_s),
-               "'U' and 'L' are expected to be of length 1.")
+  expect_true(is.data.frame(mt_cwp))
+  expect_equal(colnames(mt_cwp), c("rtime", "fileIdx"))
+  expect_equal(dim(mt_cwp), c(1, 2))
+  expect_true(is.numeric(mt_cwp$rtime))
+  expect_true(is.numeric(mt_cwp$fileIdx))
+  expect_equal(mt_cwp[1,1], 841.305, tolerance = 1e-06)
+  expect_equal(mt_cwp[1,2], 1)
   
+  expect_error(getMtime(NA, mz = mz_paracetamol, mt = mt_paracetamol),
+               "'x' is not of class 'OnDiskMSnExp'!")
+  expect_error(getMtime(raw_data, mz = mz_paracetamol),
+               "Arguments 'mz' and 'mt' are required!")
+  expect_error(getMtime(raw_data, mt = mt_paracetamol),
+               "Arguments 'mz' and 'mt' are required!")
+  expect_error(getMtime(raw_data, mz = c(150,155), mt = mt_paracetamol),
+               "3 peaks have been found in file 1, align input parameters")
+  expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), mt = mt_paracetamol),
+               "0 peaks have been found in file 1, align input parameters")
 })

@@ -15,3 +15,11 @@
 \description{
 Transformation of numeric
 }
+\examples{
+rtime <- c(10,20,30,40,50,60,70,80,90,100)
+marker <- data.frame(markerID = c("marker1", "marker2"),
+                     rtime = c(20,80),
+                     mobility = c(0, 2000))
+transformNumeric(x = rtime, marker = marker), tR = 3, U = 30, L = 90)
+
+}

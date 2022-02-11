@@ -103,7 +103,7 @@ mobilityTransform <- function(x, marker,
   if (missing(marker)) {
     stop("Missing data.frame 'marker' with marker information")}
   if (!all(c("rtime","mobility") %in% colnames(marker))) {
-    stop("Missing column 'rtime', 'mobility' or both")}
+    stop("'marker' missing column 'rtime', 'mobility' or both")}
   
   
   if (is(x, "numeric")) {
@@ -136,7 +136,7 @@ mobilityTransform <- function(x, marker,
 #' @return
 #' `numeric` vector that represents effective mobility in mm^2 / (kV * min) 
 #' 
-#' @example 
+#' @examples 
 #' rtime <- c(10,20,30,40,50,60,70,80,90,100)
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
@@ -161,10 +161,11 @@ mobilityTransform <- function(x, marker,
 #' @return
 #' `Spectra`-Object that stores the effective mobility in mm^2 / (kV * min). 
 #' 
-#' @example 
-#' fl <- system.file("extdata/CEMS_10ppm.mzML", 
-#' package = "MobilityTransformR")
-#' spectra_data <- Spectra(fl, backend = MsBackendMzR())
+#' @importFrom Spectra applyProcessing
+#' 
+#' @examples 
+#' spectra_data <- Spectra(system.file("extdata/CEMS_10ppm.mzML", 
+#' package = "MobilityTransformR"), backend = MsBackendMzR())
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
@@ -198,10 +199,8 @@ mobilityTransform <- function(x, marker,
 #' 
 #' 
 #' @examples 
-#' fl <- system.file("extdata/CEMS_10ppm.mzML", 
-#' package = "MobilityTransformR")
-#' raw_data <- readMSData(files = fl,
-#'                        mode = "onDisk")
+#' data("CEMS_OnDisk", package = "MobilityTransformR")
+#' 
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000),
@@ -212,7 +211,7 @@ mobilityTransform <- function(x, marker,
 .transformOnDiskMSnExp <- function(x, marker, tR = tR, U = U, L = L) {
   ## sanity checks
   if (!all(c("fileIdx") %in% colnames(marker))) {
-    stop("Missing column 'fileIdx'")}
+    stop("'marker' missing column 'fileIdx'")}
   
   xTransf <- x
   

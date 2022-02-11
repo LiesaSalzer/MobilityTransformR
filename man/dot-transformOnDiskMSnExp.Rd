@@ -16,10 +16,8 @@
 Transformation of OnDiskMSnExp
 }
 \examples{
-fl <- system.file("extdata/CEMS_10ppm.mzML", 
-package = "MobilityTransformR")
-raw_data <- readMSData(files = fl,
-                       mode = "onDisk")
+data("CEMS_OnDisk", package = "MobilityTransformR")
+
 marker <- data.frame(markerID = c("marker1", "marker2"),
                      rtime = c(20,80),
                      mobility = c(0, 2000),

@@ -15,3 +15,11 @@
 \description{
 Transformation of Spectra
 }
+\examples{
+spectra_data <- Spectra(system.file("extdata/CEMS_10ppm.mzML", 
+package = "MobilityTransformR"), backend = MsBackendMzR())
+marker <- data.frame(markerID = c("marker1", "marker2"),
+                     rtime = c(20,80),
+                     mobility = c(0, 2000))
+.transformSpectra(x = spectra_data, marker = marker, tR = 3, U = 30, L = 90)
+}
