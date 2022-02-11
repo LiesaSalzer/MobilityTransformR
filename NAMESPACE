@@ -2,8 +2,10 @@
 
 export(getMtime)
 export(mobilityTransform)
+import(MSnbase)
 importFrom(MetaboCoreUtils,convertMtime)
 importFrom(Spectra,applyProcessing)
+importFrom(Spectra,rtime)
 importFrom(xcms,MatchedFilterParam)
 importFrom(xcms,chromPeaks)
 importFrom(xcms,findChromPeaks)

@@ -50,6 +50,7 @@
 #'@importFrom  xcms findChromPeaks 
 #'@importFrom  xcms chromPeaks
 #'@importFrom  xcms MatchedFilterParam
+#'@import MSnbase 
 #'
 #' @examples 
 #' fl <- system.file("extdata/CEMS_10ppm.mzML", 
@@ -63,8 +64,7 @@
 #'                        
 #'@export
 getMtime <- function(x, mz = numeric(), mt = numeric(), 
-                     param = MatchedFilterParam(binSize = 1, snthresh = 50),
-                     ...) {
+                     param = MatchedFilterParam(binSize = 1, snthresh = 50)) {
 ## sanity checks
 if (!is(x, "OnDiskMSnExp")) 
   stop("'x' is not of class 'OnDiskMSnExp'!")

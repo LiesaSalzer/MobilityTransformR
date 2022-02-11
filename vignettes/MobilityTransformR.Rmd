@@ -46,13 +46,8 @@ in CE-UV and until now and to our knowledge there is no implementation in R that
 performs effective mobility transformation of CE-MS(/MS) data. 
 
 As a model for the <code>MobilityTransformR</code> package, we have taken 
-the recently developed ROMANCE software @ROMANCE2018, which is an open-source 
-software that transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. 
-However, it is not in the R environment and moreover the outputs are two 
-separate files, each for positive and negative mobilities. 
-
-We developed the <code>MobilityTransformR</code> package to perform the 
-mobility transformation of CE-MS/MS data in the R environment. Also, different 
+the recently developed open-source ROMANCE software @ROMANCE2018, which transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. However, the outputs are two separate files, each for positive and negative mobilities. 
+We developed the <code>MobilityTransformR</code> package to perform  mobility transformation of CE-MS/MS data in the R environment. Also, different 
 to ROMANCE, the output will be a single file containing both, the positive and 
 negative effective mobilities. 
 

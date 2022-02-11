@@ -22,8 +22,14 @@ One or two entries are required per file for the transformation and depending
 on the number of entries the transformation will be performed either on one or
 both markers.}
 
-\item{...}{Additional parameters passed to \code{convertMtime}, as for example \code{L}, \code{U},
-and \code{tR}.}
+\item{tR}{\code{numeric} a single value that defines the time (in minutes) of the
+electrical field ramp. The default is 0.}
+
+\item{U}{\code{numeric} a single value that defines the voltage (in kV) applied.
+Note that for reversed polarity CE mode a negative value is needed.}
+
+\item{L}{\code{numeric} a single value that defines the total length (in mm) of
+the capillary that was used for CE(-MS) analysis.}
 }
 \value{
 The same class as the input class will be returned, i.e. if a \code{numeric} is

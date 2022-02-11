@@ -66,9 +66,14 @@
 #' on the number of entries the transformation will be performed either on one or 
 #' both markers.
 #' 
-#'@param ...
-#' Additional parameters passed to `convertMtime`, as for example `L`, `U`, 
-#' and `tR`.
+#' @param tR `numeric` a single value that defines the time (in minutes) of the 
+#' electrical field ramp. The default is 0. 
+#' 
+#' @param U `numeric` a single value that defines the voltage (in kV) applied. 
+#' Note that for reversed polarity CE mode a negative value is needed.
+#'  
+#' @param L `numeric` a single value that defines the total length (in mm) of 
+#' the capillary that was used for CE(-MS) analysis. 
 #'  
 #' 
 #' @return
@@ -132,6 +137,26 @@ mobilityTransform <- function(x, marker,
 #'
 #' @param x
 #' `numeric` migration time vector in seconds.
+#' @param marker
+#' `data.frame` containing minimum two columns, where one holds the determined 
+#' migration time in minutes (here referred to as "rtime") of the EOF marker in 
+#' the same run in which the migration time is going to be transformed and the 
+#' other column the respective mobility ("mobility") of the EOF markers. Each 
+#' row hold the values for one EOF marker. 
+#' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
+#' stores the file Index. 
+#' One or two entries are required per file for the transformation and depending 
+#' on the number of entries the transformation will be performed either on one or 
+#' both markers.
+#'
+#' @param tR `numeric` a single value that defines the time (in minutes) of the 
+#' electrical field ramp. The default is 0. 
+#' 
+#' @param U `numeric` a single value that defines the voltage (in kV) applied. 
+#' Note that for reversed polarity CE mode a negative value is needed.
+#'  
+#' @param L `numeric` a single value that defines the total length (in mm) of 
+#' the capillary that was used for CE(-MS) analysis.
 #' 
 #' @return
 #' `numeric` vector that represents effective mobility in mm^2 / (kV * min) 
@@ -141,7 +166,7 @@ mobilityTransform <- function(x, marker,
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' transformNumeric(x = rtime, marker = marker), tR = 3, U = 30, L = 90)
+#' .transformNumeric(x = rtime, marker = marker, tR = 3, U = 30, L = 90)
 #' 
 .transformNumeric <- function(x, marker, tR = tR, U = U, L = L) {
 
@@ -157,11 +182,32 @@ mobilityTransform <- function(x, marker,
 #'
 #' @param x
 #' `Spectra`-object that stores the migration times in seconds.
+#' @param tR `numeric` a single value that defines the time (in minutes) of the 
+#' electrical field ramp. The default is 0. 
+#'
+#' @param marker
+#' `data.frame` containing minimum two columns, where one holds the determined 
+#' migration time in minutes (here referred to as "rtime") of the EOF marker in 
+#' the same run in which the migration time is going to be transformed and the 
+#' other column the respective mobility ("mobility") of the EOF markers. Each 
+#' row hold the values for one EOF marker. 
+#' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
+#' stores the file Index. 
+#' One or two entries are required per file for the transformation and depending 
+#' on the number of entries the transformation will be performed either on one or 
+#' both markers.
+#'  
+#' @param U `numeric` a single value that defines the voltage (in kV) applied. 
+#' Note that for reversed polarity CE mode a negative value is needed.
+#'  
+#' @param L `numeric` a single value that defines the total length (in mm) of 
+#' the capillary that was used for CE(-MS) analysis. 
 #' 
 #' @return
 #' `Spectra`-Object that stores the effective mobility in mm^2 / (kV * min). 
 #' 
 #' @importFrom Spectra applyProcessing
+#' @importFrom Spectra rtime
 #' 
 #' @examples 
 #' spectra_data <- Spectra(system.file("extdata/CEMS_10ppm.mzML", 
@@ -193,10 +239,31 @@ mobilityTransform <- function(x, marker,
 #' 
 #' @param x
 #' `OnDiskMSnExp`-object that stores the migration times in seconds.
+#' 
+#' @param marker
+#' `data.frame` containing minimum two columns, where one holds the determined 
+#' migration time in minutes (here referred to as "rtime") of the EOF marker in 
+#' the same run in which the migration time is going to be transformed and the 
+#' other column the respective mobility ("mobility") of the EOF markers. Each 
+#' row hold the values for one EOF marker. 
+#' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
+#' stores the file Index. 
+#' One or two entries are required per file for the transformation and depending 
+#' on the number of entries the transformation will be performed either on one or 
+#' both markers.
+#' 
+#' @param tR `numeric` a single value that defines the time (in minutes) of the 
+#' electrical field ramp. The default is 0. 
+#' 
+#' @param U `numeric` a single value that defines the voltage (in kV) applied. 
+#' Note that for reversed polarity CE mode a negative value is needed.
 #'  
+#' @param L `numeric` a single value that defines the total length (in mm) of 
+#' the capillary that was used for CE(-MS) analysis.  
 #' @return
 #' `OnDiskMSnExp`-Object that stores the effective mobility in mm^2 / (kV * min). 
 #' 
+#' @import MSnbase
 #' 
 #' @examples 
 #' data("CEMS_OnDisk", package = "MobilityTransformR")

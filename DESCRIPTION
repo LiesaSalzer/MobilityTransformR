@@ -7,12 +7,11 @@ Authors@R: person("Liesa", "Salzer",
            role = c("cre", "aut"),
            comment = c(ORCID = "0000-0003-0761-0656"))
 Depends:
-    MSnbase
+    MSnbase,
+    R (>= 3.5.0)
 Imports:
-    methods,
     xcms,
     MetaboCoreUtils,
-    magrittr,
     Spectra
 Suggests:
     testthat,

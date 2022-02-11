@@ -8,8 +8,7 @@ getMtime(
   x,
   mz = numeric(),
   mt = numeric(),
-  param = MatchedFilterParam(binSize = 1, snthresh = 50),
-  ...
+  param = MatchedFilterParam(binSize = 1, snthresh = 50)
 )
 }
 \arguments{
