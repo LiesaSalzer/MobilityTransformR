@@ -52,7 +52,7 @@ test_that("Transformation of Spectra works", {
   
   ## test if MSnbase/ xcms functions work
   fl <- tempfile()
-  export(transf, MsBackendMzR(), file = fl)
+  Spectra::export(transf, Spectra::MsBackendMzR(), file = fl)
   ## load again as OnDiskMSnExp
   transf_load <- readMSData(files = fl, mode = "onDisk")
   mz_test <- c(152.071154 - 0.001, 152.071154 + 0.001)

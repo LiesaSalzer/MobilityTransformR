@@ -24,8 +24,8 @@ test_that("Getting migration time works", {
                "Arguments 'mz' and 'mt' are required!")
   expect_error(getMtime(raw_data, mz = c(150,155), mt = mt_paracetamol),
                "3 peaks have been found in file 1, align input parameters")
-  expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), mt = mt_paracetamol),
-               "0 peaks have been found in file 1, align input parameters")
+  expect_warning(expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), mt = mt_paracetamol),
+               "0 peaks have been found in file 1, align input parameters"))
   
 })
 
@@ -49,6 +49,7 @@ test_that("Getting migration time with CentWaveParam works", {
                "Arguments 'mz' and 'mt' are required!")
   expect_error(getMtime(raw_data, mz = c(150,155), mt = mt_paracetamol),
                "3 peaks have been found in file 1, align input parameters")
-  expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), mt = mt_paracetamol),
-               "0 peaks have been found in file 1, align input parameters")
+  expect_warning(expect_error(getMtime(raw_data, mz = c(155.0001,155.0002), 
+                                       mt = mt_paracetamol),
+               "0 peaks have been found in file 1, align input parameters"))
 })
