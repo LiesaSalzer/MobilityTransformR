@@ -1,6 +1,10 @@
 ## load toy example data set
-data("CEMS_test", package = "MobilityTransformR")
+data("CEMS_OnDisk", package = "MobilityTransformR")
 
+# [M+H]+ of paracetamol: mz = 152.071154
+mz_paracetamol <- c(152.071154 - 0.005, 152.071154 + 0.005)
+mt_paracetamol <- c(600, 900)
+getMtime(subset, mz = mz_paracetamol, mt = mt_paracetamol)
 
 test_that("Getting migration time works", {
   

@@ -49,6 +49,7 @@
 #'  
 #'@importFrom  xcms findChromPeaks 
 #'@importFrom  xcms chromPeaks
+#'@importFrom  xcms MatchedFilterParam
 #'
 #' @examples 
 #' fl <- system.file("extdata/CEMS_10ppm.mzML", 
