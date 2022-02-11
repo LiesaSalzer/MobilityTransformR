@@ -146,33 +146,19 @@ paracetamol
 
 ```
 
-## Get MT of Secondary Marker Procaine
+## MT of Secondary Marker Procaine
 Effective mobilities can be already calculated using the EOF marker Paracetamol. 
 However, it is also possible to calculate the mobility using a secondary marker. 
 This might be of interest for example when the peak shape of the main marker is 
 not sufficient or ambiguity detection.
 
-For such reasons procaine was added to the mixture as positively charged 
-secondary marker. 
+In order to show how we can use a secondary marker to convert the data, we 
+create in the next step a dataframe containing the MT and file information from 
+another, secondary marker called Procaine.
 
 ```{r charged marker, message=FALSE, warning=FALSE}
-mz_procaine <- c(237.160303 - tolerance, 237.160303 + tolerance)
-mt_procaine <- c(400, 800)
-
-marker_EIE <-  raw_data |> filterMz(mz = mz_procaine) |> 
-    filterRt(rt = mt_procaine)
-
-plot(chromatogram(marker_EIE), 
-     main = "Procaine EIE",
-     xlab = "migration time (sec)")
-
-# get the MT of procaine using adjusted parameters
-
-procaine <- getMtime(raw_data,
-                     mz = mz_procaine, 
-                     mt = mt_procaine)
-
-procaine
+procaine <- data.frame("rtime" = c(450.239, 465.711),
+                       "fileIdx" = c(1, 2))
 ```
 
 
