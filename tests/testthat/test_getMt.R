@@ -1,6 +1,8 @@
 ## load toy example data set
-data("CEMS_OnDisk", package = "MobilityTransformR")
-
+fl <- system.file("extdata/CEMS_10ppm.mzML",
+                  package = "MobilityTransformR")
+raw_data <- MSnbase::readMSData(files = fl,
+                       mode = "onDisk")
 # [M+H]+ of paracetamol: mz = 152.071154
 mz_paracetamol <- c(152.065154, 152.076154)
 mt_paracetamol <- c(600, 900)

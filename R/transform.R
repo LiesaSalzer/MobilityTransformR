@@ -166,7 +166,7 @@ mobilityTransform <- function(x, marker,
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' .transformNumeric(x = rtime, marker = marker, tR = 3, U = 30, L = 90)
+#' .transformNumeric(x = rtime, marker = marker, tR = 3, U = 30, L = 90) = 3, U = 30, L = 90)
 #' 
 .transformNumeric <- function(x, marker, tR = tR, U = U, L = L) {
 
@@ -215,7 +215,7 @@ mobilityTransform <- function(x, marker,
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' .transformSpectra(x = spectra_data, marker = marker, tR = 3, U = 30, L = 90)
+#' MobilityTransformR:::.transformSpectra(x = spectra_data, marker = marker, tR = 3, U = 30, L = 90)
 
 .transformSpectra <- function(x, marker, tR = tR, U = U, L = L) {
   
@@ -266,14 +266,17 @@ mobilityTransform <- function(x, marker,
 #' @import MSnbase
 #' 
 #' @examples 
-#' data("CEMS_OnDisk", package = "MobilityTransformR")
+#'   fl <- system.file("extdata/CEMS_10ppm.mzML",
+#'   package = "MobilityTransformR")
+#'   raw_data <- MSnbase::readMSData(files = fl,
+#'                          mode = "onDisk")
 #' 
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000),
 #'                      fileIdx = c(1,1))
 #'                      
-#' .transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
+#' MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
 
 .transformOnDiskMSnExp <- function(x, marker, tR = tR, U = U, L = L) {
   ## sanity checks

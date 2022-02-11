@@ -36,12 +36,15 @@ the capillary that was used for CE(-MS) analysis.}
 Transformation of OnDiskMSnExp
 }
 \examples{
-data("CEMS_OnDisk", package = "MobilityTransformR")
+  fl <- system.file("extdata/CEMS_10ppm.mzML",
+  package = "MobilityTransformR")
+  raw_data <- MSnbase::readMSData(files = fl,
+                         mode = "onDisk")
 
 marker <- data.frame(markerID = c("marker1", "marker2"),
                      rtime = c(20,80),
                      mobility = c(0, 2000),
                      fileIdx = c(1,1))
                      
-.transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
+MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
 }

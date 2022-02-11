@@ -70,7 +70,10 @@ test_that("Transformation of Spectra works", {
 
 
 test_that("Transformation of OnDiskExp works", {
-  data("CEMS_OnDisk", package = "MobilityTransformR")
+  fl <- system.file("extdata/CEMS_10ppm.mzML",
+  package = "MobilityTransformR")
+  raw_data <- MSnbase::readMSData(files = fl,
+                         mode = "onDisk")
   
   marker <- data.frame(markerID = c("marker1", "marker2"),
                        rtime = c(20,80),
