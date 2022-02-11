@@ -102,8 +102,7 @@ fl <- list.files(system.file("extdata/", package = "MobilityTransformR"),
                  pattern = ".mzML", full.names = T)
 
 # Load mzXML data with MSnBase
-raw_data <- readMSData(files = c("D:/Software/R/Packages/MobilityTransformR/inst/extdata/CEMS_10ppm.mzML", 
-                               "D:/Software/R/Packages/MobilityTransformR/inst/extdata/CEMS_25ppm.mzML"), mode = "onDisk")
+raw_data <- readMSData(files = fl, mode = "onDisk")
 ```
 
 # Get Marker Migration Times
