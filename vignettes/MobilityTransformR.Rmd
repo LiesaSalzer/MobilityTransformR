@@ -1,6 +1,5 @@
 ---
 title: "Description and usage of MobilityTransformR"
-
 output:
     BiocStyle::html_document:
         toc_float: true
@@ -19,7 +18,6 @@ BiocStyle::markdown()
 ```
 
 **Package**: `MobilityTransformR`<br />
-**Authors**: `r packageDescription("MobilityTransformR")["Author"] `<br />
 **Last modified:** `r file.info("MobilityTransformR.Rmd")$mtime`<br />
 **Compiled**: `r date()`
 
@@ -51,7 +49,7 @@ We developed the <code>MobilityTransformR</code> package to perform  mobility tr
 to ROMANCE, the output will be a single file containing both, the positive and 
 negative effective mobilities. 
 
-The transformation is performed using functions of <code>MetaboCoreUtils</code>,
+The transformation is performed using functionality from the packages <code>MetaboCoreUtils</code>,
 <code>xcms</code>, <code>MSnbase</code>, and <code>Spectra</code>. The 
 transformed data can be exported as <code>.mzML</code> file and can be further 
 analyzed in R or other software.
@@ -81,20 +79,15 @@ library(Spectra)
 ## Load test data
 
 To showcase the functionality of the <code>MobilityTransformR</code> 
-package two CE-MS test sets containing a mixtures of different metabolites at 
-10 ppm concentration, acquired at positive CE polarity and positive ionization 
-mode is used. Moreover, Paracetamol was added as EOF marker in a final 
-concentration of 50 ppm to the sample. Procaine was added as positively charged, 
-and ethyl sulfate as negatively charged secondary marker, both at a final 
+package two CE-MS test sets containing a mixtures of different metabolites at a concentration of 10 ppm and 25 ppm precisely, acquired at positive CE polarity and positive ionization mode is used. Moreover, Paracetamol was added to the analysis as EOF marker in a final concentration of 50 ppm to the sample. Procaine was added as positively charged, secondary marker at a final 
 concentration of 10 ppm. 
 The markers are required for the later effective mobility transformation process. 
-
 The test data is loaded using the <code>readMSData()</code> function from 
 <code>MSnbase</code>.
 
 ```{r data, message=FALSE}
 fl <- list.files(system.file("extdata/", package = "MobilityTransformR"), 
-                 pattern = ".mzML", full.names = T)
+                 pattern = ".mzML", full.names = TRUE)
 
 # Load mzXML data with MSnBase
 raw_data <- readMSData(files = fl, mode = "onDisk")
@@ -102,14 +95,10 @@ raw_data <- readMSData(files = fl, mode = "onDisk")
 
 # Get Marker Migration Times
 In order to perform the effective mobility transformation, first the migration 
-times (MT) of the markers needs to be determined. If multiple files are analyzed 
-the MT of the markers in each file must be determined since they will not be the 
-same based on EOF fluctuations. 
+times (MTs) of the markers needs to be determined. If multiple files are used,
+the MT of the markers in each file must be determined since they will vary based on EOF fluctuations. 
 
-The <code>getMtime()</code> function requires the <code>OnDiskMSnExp</code> 
-<code>raw_data</code> as input and uses an mz-range <code>mz</code> and MT-range 
-<code>mt</code> to generate an Extracted Ion Electropherogram (EIE). The MT of 
-the peak will be determined by <code>findChromPeaks</code> from 
+The <code>getMtime()</code> function requires an <code>OnDiskMSnExp</code> object,<code>raw_data</code>, as input and uses an mz-range <code>mz</code> and MT-range <code>mt</code> to generate an Extracted Ion Electropherogram (EIE). The MT of the peak will be determined by <code>findChromPeaks</code> from 
 <code>xcms</code>.
 It is very important to define the <code>mz</code>-range and 
 <code>mt</code>-range as narrow as possible to ensure that the right peak will 
@@ -118,11 +107,10 @@ mass accuracy of the mass spectrometer that was used to acquire the data.
 
 ## Get MT of EOF Marker Paracetamol
 
-In order to check the right <code>mz</code>-, and <code>mt</code>-window and 
-<code>minInt</code> for the exact MT determination, we use 
+In order to check the right <code>mz</code>-, and <code>mt</code>-window for the exact MT determination, we use the
 <code>plot(chromatogram())</code> function to plot the respective EIE. 
 
-Note that the plot functions are adapted from LC-MS package MSnbase, which has 
+Note that the plot functions are adapted from LC-MS package <code>MSnbase</code>, which has 
 "retention time" as default x-axis label. 
 
 ```{r EOF marker, message=FALSE, warning=FALSE}
@@ -134,7 +122,7 @@ mz_paracetamol <- c(152.071154 - tolerance, 152.071154 + tolerance)
 mt_paracetamol <- c(600, 900)
 
 marker_EIE <-  raw_data |> filterMz(mz = mz_paracetamol) |> 
-    filterRt(rt = mt_paracetamol)
+  filterRt(rt = mt_paracetamol)
 
 plot(chromatogram(marker_EIE), 
      main = "Paracetamol EIE", 
@@ -160,7 +148,7 @@ paracetamol
 
 ## Get MT of Secondary Marker Procaine
 Effective mobilities can be already calculated using the EOF marker Paracetamol. 
-However, it is also possible to calculate the mobility using another marker. 
+However, it is also possible to calculate the mobility using a secondary marker. 
 This might be of interest for example when the peak shape of the main marker is 
 not sufficient or ambiguity detection.
 
@@ -181,8 +169,8 @@ plot(chromatogram(marker_EIE),
 # get the MT of procaine using adjusted parameters
 
 procaine <- getMtime(raw_data,
-                        mz = mz_procaine, 
-                        mt = mt_procaine)
+                     mz = mz_procaine, 
+                     mt = mt_procaine)
 
 procaine
 ```
@@ -290,10 +278,11 @@ same class.
 # Conversion of mt in OnDiskMSnExp objects
 mobility_data <- mobilityTransform(x = raw_data, marker = marker)
 
-# #OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
-# #copy = FALSE, (otherwise spectrum ordering will be wrong)
-# fl_mobility_data <- tempfile()
-# writeMSData(filterFile(mobility_data, 1), file = fl_mobility_data, copy = FALSE)
+#OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
+#copy = FALSE, (otherwise spectrum ordering will be wrong)
+fl_mobility_data <- tempfile()
+writeMSData(filterFile(mobility_data, 1), 
+            file = fl_mobility_data, copy = FALSE)
 ```
 
 
@@ -310,10 +299,10 @@ spectra_mobility <- mobilityTransform(spectra_data,
                                       marker[marker$fileIdx == 1,])
 
 
-# #Transformed data can then be exported again as .mzML file to use in xcms or 
-# #other software
-# fl_mobility <- tempfile()
-# export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
+#Transformed data can then be exported again as .mzML file to use in xcms or
+#other software
+fl_mobility <- tempfile()
+export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
 
 ```
 
@@ -328,19 +317,13 @@ The resulting unit of the effective mobility is $\frac{mm^2}{kV*min}$.
 Here, we inspect them with the <code>plot(chromatogram())</code> function from 
 <code>xcms</code>. 
 
-As described before, the analyzed data contain 10 different metabolites in 10 ppm 
-concentration acquired in positive ionization mode. We can check the effective 
-mobilities of single compounds by extracting their EIE as for example Lysine 
-(mz = 147.112806).
+As described before, the test data contain different metabolites in 10 ppm and 25 ppm final concentration, acquired in positive ionization mode. We can check the effective mobilities of single compounds by extracting their EIE as for example Lysine (mz = 147.112806).
 
 
 ```{r mobility transformed data, message=FALSE}
 # Example: Extract ion electropherogram (EIE) from lysine
-mz_lysine <- c(147.112806
- - tolerance, 147.112806
- + tolerance)
+mz_lysine <- c(147.112806 - tolerance, 147.112806 + tolerance)
 mobilityRestriction <- c(1000, 2500)
-
 
 # Extract ion electropherogram of compound
 lysine_EIE <-  mobility_data |> 
@@ -355,7 +338,7 @@ plot(chromatogram(lysine_EIE),
 # compare with extracted ion electropherogram of migration time scale
 lysine_mt_EIE <-  raw_data |> 
     filterMz(mz = mz_lysine) |>
-  filterRt(c(400, 600))
+    filterRt(c(400, 600))
 
 plot(chromatogram(lysine_mt_EIE),
      main = "Lysine EIE - MT scale", 

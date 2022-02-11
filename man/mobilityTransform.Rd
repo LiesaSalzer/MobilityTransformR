@@ -18,9 +18,9 @@ other column the respective mobility ("mobility") of the EOF markers. Each
 row hold the values for one EOF marker.
 If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required, that
 stores the file Index.
-One or two entries are required per file for the transformation and depending
-on the number of entries the transformation will be performed either on one or
-both markers.}
+One or two entries are required per file for the transformation and
+depending on the number of entries the transformation will be performed
+either on one or both markers.}
 
 \item{tR}{\code{numeric} a single value that defines the time (in minutes) of the
 electrical field ramp. The default is 0.}
@@ -33,15 +33,17 @@ the capillary that was used for CE(-MS) analysis.}
 }
 \value{
 The same class as the input class will be returned, i.e. if a \code{numeric} is
-used as input a \code{numeric} that represents effective mobility will be returned.
-If a \code{Spectra}-Object is the input, also a \code{Spectra}-Object with transformed
-mobility scale will be returned. The same applies for \code{MSnOnDiskExp}-objects.
+used as input a \code{numeric} that represents effective mobility will be
+returned. If a \code{Spectra}-Object is the input, also a \code{Spectra}-Object with
+transformed mobility scale will be returned. The same applies for
+\code{MSnOnDiskExp}-objects.
 The respective unit for the effective mobility is mm^2 / (kV * min)
 }
 \description{
-\code{mobilityTransform} performs effective mobility scale transformation of CE(-MS)
-data, which is used to overcome variations of the migration times, caused by
-differences in the Electroosmotic Flow (EOF) between different runs.
+\code{mobilityTransform} performs effective mobility scale transformation of
+CE(-MS) data, which is used to overcome variations of the migration times,
+caused by  differences in the Electroosmotic Flow (EOF) between different
+runs.
 In order to monitor the EOF and perform the transformation, neutral or
 charged EOF markers are spiked into the sample before analysis. The
 information of the EOF markers (migration time and effective mobility) will
@@ -61,13 +63,13 @@ result in more precise effective mobility values.
 Currently, \code{mobilityTransform} supports \code{numeric} vectors of migration times
 as input, \code{Spectra}-objects or \code{MSnOnDiskExp}-objects.
 \code{mobilityTransform} is a method that used different functions to convert
-CE-MS data, depending on the input class. Following functions will be applied
-depending on the input class:
+CE-MS data, depending on the input class. Following functions will be
+applied depending on the input class:
 \itemize{
-\item \code{.transformNumeric}: performs effective mobility scale transformation of a
-\code{numeric} migration time vector as input. This can be used to transform a
-row of migration times or a single value. This function will return a
-\code{numeric}
+\item \code{.transformNumeric}: performs effective mobility scale transformation of
+a \code{numeric} migration time vector as input. This can be used to
+transform a row of migration times or a single value. This function will
+return a \code{numeric}
 \item \code{.transformSpectra} performs effective mobility scale transformation of
 the migration time scale within a \code{Spectra} object. This function will
 return a \code{Spectra} object with effective mobility scale

@@ -5,9 +5,10 @@
 #' @title Effective mobility scale transformation of CE-MS data
 #'
 #' @description
-#' `mobilityTransform` performs effective mobility scale transformation of CE(-MS) 
-#' data, which is used to overcome variations of the migration times, caused by 
-#' differences in the Electroosmotic Flow (EOF) between different runs. 
+#' `mobilityTransform` performs effective mobility scale transformation of 
+#' CE(-MS) data, which is used to overcome variations of the migration times, 
+#' caused by  differences in the Electroosmotic Flow (EOF) between different 
+#' runs. 
 #' In order to monitor the EOF and perform the transformation, neutral or 
 #' charged EOF markers are spiked into the sample before analysis. The 
 #' information of the EOF markers (migration time and effective mobility) will 
@@ -27,13 +28,13 @@
 #' Currently, `mobilityTransform` supports `numeric` vectors of migration times 
 #' as input, `Spectra`-objects or `MSnOnDiskExp`-objects. 
 #' `mobilityTransform` is a method that used different functions to convert 
-#' CE-MS data, depending on the input class. Following functions will be applied 
-#' depending on the input class:
+#' CE-MS data, depending on the input class. Following functions will be 
+#' applied depending on the input class:
 #' 
-#'  - `.transformNumeric`: performs effective mobility scale transformation of a 
-#'    `numeric` migration time vector as input. This can be used to transform a 
-#'    row of migration times or a single value. This function will return a 
-#'    `numeric`
+#'  - `.transformNumeric`: performs effective mobility scale transformation of 
+#'     a `numeric` migration time vector as input. This can be used to 
+#'     transform a row of migration times or a single value. This function will 
+#'     return a `numeric`
 #' 
 #' 
 #'  - `.transformSpectra` performs effective mobility scale transformation of 
@@ -62,9 +63,9 @@
 #' row hold the values for one EOF marker. 
 #' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
 #' stores the file Index. 
-#' One or two entries are required per file for the transformation and depending 
-#' on the number of entries the transformation will be performed either on one or 
-#' both markers.
+#' One or two entries are required per file for the transformation and 
+#' depending on the number of entries the transformation will be performed 
+#' either on one or both markers.
 #' 
 #' @param tR `numeric` a single value that defines the time (in minutes) of the 
 #' electrical field ramp. The default is 0. 
@@ -78,9 +79,10 @@
 #' 
 #' @return
 #' The same class as the input class will be returned, i.e. if a `numeric` is 
-#' used as input a `numeric` that represents effective mobility will be returned.
-#' If a `Spectra`-Object is the input, also a `Spectra`-Object with transformed 
-#' mobility scale will be returned. The same applies for `MSnOnDiskExp`-objects. 
+#' used as input a `numeric` that represents effective mobility will be 
+#' returned. If a `Spectra`-Object is the input, also a `Spectra`-Object with 
+#' transformed mobility scale will be returned. The same applies for 
+#' `MSnOnDiskExp`-objects. 
 #' The respective unit for the effective mobility is mm^2 / (kV * min) 
 #'
 #' @author Liesa Salzer
@@ -145,9 +147,9 @@ mobilityTransform <- function(x, marker,
 #' row hold the values for one EOF marker. 
 #' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
 #' stores the file Index. 
-#' One or two entries are required per file for the transformation and depending 
-#' on the number of entries the transformation will be performed either on one or 
-#' both markers.
+#' One or two entries are required per file for the transformation and 
+#' depending on the number of entries the transformation will be performed 
+#' either on one or both markers.
 #'
 #' @param tR `numeric` a single value that defines the time (in minutes) of the 
 #' electrical field ramp. The default is 0. 
@@ -166,7 +168,8 @@ mobilityTransform <- function(x, marker,
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' .transformNumeric(x = rtime, marker = marker, tR = 3, U = 30, L = 90) = 3, U = 30, L = 90)
+#' MobilityTransformR:::.transformNumeric(x = rtime, marker = marker, tR = 3, 
+#' U = 30, L = 90) 
 #' 
 .transformNumeric <- function(x, marker, tR = tR, U = U, L = L) {
 
@@ -193,9 +196,9 @@ mobilityTransform <- function(x, marker,
 #' row hold the values for one EOF marker. 
 #' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
 #' stores the file Index. 
-#' One or two entries are required per file for the transformation and depending 
-#' on the number of entries the transformation will be performed either on one or 
-#' both markers.
+#' One or two entries are required per file for the transformation and 
+#' depending on the number of entries the transformation will be performed 
+#' either on one or both markers.
 #'  
 #' @param U `numeric` a single value that defines the voltage (in kV) applied. 
 #' Note that for reversed polarity CE mode a negative value is needed.
@@ -210,12 +213,13 @@ mobilityTransform <- function(x, marker,
 #' @importFrom Spectra rtime
 #' 
 #' @examples 
-#' spectra_data <- Spectra(system.file("extdata/CEMS_10ppm.mzML", 
-#' package = "MobilityTransformR"), backend = MsBackendMzR())
+#' spectra_data <- Spectra::Spectra(system.file("extdata/CEMS_10ppm.mzML", 
+#' package = "MobilityTransformR"))
 #' marker <- data.frame(markerID = c("marker1", "marker2"),
 #'                      rtime = c(20,80),
 #'                      mobility = c(0, 2000))
-#' MobilityTransformR:::.transformSpectra(x = spectra_data, marker = marker, tR = 3, U = 30, L = 90)
+#' MobilityTransformR:::.transformSpectra(x = spectra_data, marker = marker, 
+#' tR = 3, U = 30, L = 90)
 
 .transformSpectra <- function(x, marker, tR = tR, U = U, L = L) {
   
@@ -248,9 +252,9 @@ mobilityTransform <- function(x, marker,
 #' row hold the values for one EOF marker. 
 #' If `OnDiskMSnExp` is used in `x`, a third column "fileIdx" is required, that
 #' stores the file Index. 
-#' One or two entries are required per file for the transformation and depending 
-#' on the number of entries the transformation will be performed either on one or 
-#' both markers.
+#' One or two entries are required per file for the transformation and 
+#' depending on the number of entries the transformation will be performed 
+#' either on one or both markers.
 #' 
 #' @param tR `numeric` a single value that defines the time (in minutes) of the 
 #' electrical field ramp. The default is 0. 
@@ -261,7 +265,8 @@ mobilityTransform <- function(x, marker,
 #' @param L `numeric` a single value that defines the total length (in mm) of 
 #' the capillary that was used for CE(-MS) analysis.  
 #' @return
-#' `OnDiskMSnExp`-Object that stores the effective mobility in mm^2 / (kV * min). 
+#' `OnDiskMSnExp`-Object that stores the effective mobility in 
+#' mm^2 / (kV * min). 
 #' 
 #' @import MSnbase
 #' 
@@ -276,7 +281,8 @@ mobilityTransform <- function(x, marker,
 #'                      mobility = c(0, 2000),
 #'                      fileIdx = c(1,1))
 #'                      
-#' MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
+#' MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, 
+#' tR = 3, U = 30, L = 90)
 
 .transformOnDiskMSnExp <- function(x, marker, tR = tR, U = U, L = L) {
   ## sanity checks
@@ -288,7 +294,8 @@ mobilityTransform <- function(x, marker,
   rt_file <- split(rtime(x), fromFile(x))
   
   for (i in names(rt_file)) {
-    ## Filter fData(xTransf) based on file index and change rt into transformed scale
+    ## Filter fData(xTransf) based on file index and change rt into transformed 
+    ## scale
     fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime <- 
       convertMtime(x = rt_file[[i]]/60, 
                    rtime = marker[marker$fileIdx == i,]$rtime/60, 
@@ -297,8 +304,9 @@ mobilityTransform <- function(x, marker,
     
     ## Data needs to be ordered by the migration time to 
     ## be removed to prevent errors in xcms 
-  fData(xTransf)[fData(xTransf)$fileIdx == i,] <-
-    fData(xTransf)[fData(xTransf)$fileIdx == i,][order(fData(xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime),]
+    fData(xTransf)[fData(xTransf)$fileIdx == i,] <-
+      fData(xTransf)[fData(xTransf)$fileIdx == i,][order(fData(
+        xTransf)[fData(xTransf)$fileIdx == i,]$retentionTime),]
 
   }
   

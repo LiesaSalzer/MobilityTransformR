@@ -16,9 +16,9 @@ other column the respective mobility ("mobility") of the EOF markers. Each
 row hold the values for one EOF marker.
 If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required, that
 stores the file Index.
-One or two entries are required per file for the transformation and depending
-on the number of entries the transformation will be performed either on one or
-both markers.}
+One or two entries are required per file for the transformation and
+depending on the number of entries the transformation will be performed
+either on one or both markers.}
 
 \item{tR}{\code{numeric} a single value that defines the time (in minutes) of the
 electrical field ramp. The default is 0.}
@@ -30,7 +30,8 @@ Note that for reversed polarity CE mode a negative value is needed.}
 the capillary that was used for CE(-MS) analysis.}
 }
 \value{
-\code{OnDiskMSnExp}-Object that stores the effective mobility in mm^2 / (kV * min).
+\code{OnDiskMSnExp}-Object that stores the effective mobility in
+mm^2 / (kV * min).
 }
 \description{
 Transformation of OnDiskMSnExp
@@ -46,5 +47,6 @@ marker <- data.frame(markerID = c("marker1", "marker2"),
                      mobility = c(0, 2000),
                      fileIdx = c(1,1))
                      
-MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, tR = 3, U = 30, L = 90)
+MobilityTransformR:::.transformOnDiskMSnExp(x = raw_data, marker = marker, 
+tR = 3, U = 30, L = 90)
 }

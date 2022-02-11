@@ -16,9 +16,9 @@ other column the respective mobility ("mobility") of the EOF markers. Each
 row hold the values for one EOF marker.
 If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required, that
 stores the file Index.
-One or two entries are required per file for the transformation and depending
-on the number of entries the transformation will be performed either on one or
-both markers.}
+One or two entries are required per file for the transformation and
+depending on the number of entries the transformation will be performed
+either on one or both markers.}
 
 \item{tR}{\code{numeric} a single value that defines the time (in minutes) of the
 electrical field ramp. The default is 0.}
@@ -36,10 +36,11 @@ the capillary that was used for CE(-MS) analysis.}
 Transformation of numeric
 }
 \examples{
-rtime <- c(10,20,3#' rtime <- c(10,20,30,40,50,60,70,80,90,100)
+rtime <- c(10,20,30,40,50,60,70,80,90,100)
 marker <- data.frame(markerID = c("marker1", "marker2"),
                      rtime = c(20,80),
                      mobility = c(0, 2000))
-.transformNumeric(x = rtime, marker = marker, tR = 3, U = 30, L = 90) = 3, U = 30, L = 90)
+MobilityTransformR:::.transformNumeric(x = rtime, marker = marker, tR = 3, 
+U = 30, L = 90) 
 
 }
