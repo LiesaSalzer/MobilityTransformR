@@ -58,10 +58,13 @@ analyzed in R or other software.
 # Setup
 
 ## Installation
-The <code>MobilityTransformR</code> package can be installed directly from 
-GitHub using 
-```{r, message=FALSE, warning=FALSE, message=FALSE, eval=FALSE}
-devtools::install_github("LiesaSalzer/MobilityTransformR")
+The <code>MobilityTransformR</code> package can be installed as follows: 
+
+```{r, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("MobilityTransformR")
 ```
 
 ## Load required libries
