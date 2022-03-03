@@ -7,12 +7,25 @@ Effective mobility Transformation for CE-MS data.
 You are welcome to 
 
  * write a mail to <liesa.salzer@helmholtz-munich.de> 
- * submit suggestions and issues: <https://github.com/LiesaSalzer/MobilityTransformR/issues>
- * send a pull request: <https://github.com/LiesaSalzer/MobilityTransformR/issues> 
+ * submit suggestions and issues: 
+ <https://github.com/LiesaSalzer/MobilityTransformR/issues>
+ * send a pull request: 
+ <https://github.com/LiesaSalzer/MobilityTransformR/issues> 
 
 ## Install
-If you would like to install the development version of MobilityTransformR, you will first
-have to install [devtools](http://cran.r-project.org/web/packages/devtools/index.html) package: 
+To install MobilityTransformR, use the stable version available at 
+Bioconductor. Enter:
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("MobilityTransformR")
+```
+
+If you would like to install the development version of MobilityTransformR, 
+you will first have to install 
+[devtools](http://cran.r-project.org/web/packages/devtools/index.html) 
+package: 
 
 ```r
 install.packages("devtools")

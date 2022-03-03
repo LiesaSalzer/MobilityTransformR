@@ -1,14 +1,21 @@
 ---
 title: "Description and usage of MobilityTransformR"
-output:
-    BiocStyle::html_document:
-        toc_float: true
+package: "`r BiocStyle::pkg_ver('MobilityTransformationR')`"
+date: "`r BiocStyle::doc_date()`"
+author: 
+- name: Liesa Salzer
+  affiliation: Analytical BioGeoChemistry, Helmholtz Zentrum München
+  email: liesa.salzer@helmholtz-munich.de
+  
 vignette: >
     %\VignetteIndexEntry{Description and usage of MobilityTransformR}
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     %\VignettePackage{MobilityTransformR}
     %\VignetteDepends{MobilityTransformR,xcms,BiocStyle}
+output:
+    BiocStyle::html_document:
+        toc_float: true    
 bibliography: references.bib
 csl: biomed-central.csl
 ---
@@ -16,10 +23,6 @@ csl: biomed-central.csl
 ```{r style, echo = FALSE, results = 'asis', message=FALSE}
 BiocStyle::markdown()
 ```
-
-**Package**: `MobilityTransformR`<br />
-**Last modified:** `r file.info("MobilityTransformR.Rmd")$mtime`<br />
-**Compiled**: `r date()`
 
 ```{r, echo = FALSE, message = FALSE}
 library(BiocStyle)
@@ -34,41 +37,59 @@ migration times (MT) compared to retention times (RT) because of fluctuations
 in the Electroosmotic flow (EOF). 
 
 However, the effective mobility $µ_{eff}$ of a compound remains stable in the 
-same electrophoretic system. The use of an effective mobility scale instead of 
-a migration time scale circumvents the drawback of MT shifts and will result in 
-highly reproducible peaks, which has already been shown in 2001 
+same electrophoretic system. The use of an effective mobility scale instead 
+of a migration time scale circumvents the drawback of MT shifts and will 
+result in highly reproducible peaks, which has already been shown in 2001 
 @Schmitt-Kopplin2001. 
 
 Effective mobility transformation for CE-MS data is not as straightforward as 
-in CE-UV and until now and to our knowledge there is no implementation in R that 
-performs effective mobility transformation of CE-MS(/MS) data. 
+in CE-UV and until now and to our knowledge there is no implementation in R 
+that performs effective mobility transformation of CE-MS(/MS) data. 
 
-As a model for the <code>MobilityTransformR</code> package, we have taken 
-the recently developed open-source ROMANCE software @ROMANCE2018, which transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. However, the outputs are two separate files, each for positive and negative mobilities. 
-We developed the <code>MobilityTransformR</code> package to perform  mobility transformation of CE-MS/MS data in the R environment. Also, different 
-to ROMANCE, the output will be a single file containing both, the positive and 
-negative effective mobilities. 
+As a model for the `MobilityTransformR` package, we have taken 
+the recently developed open-source ROMANCE software @ROMANCE2018, which 
+transforms the MT scale of CE-MS data into an $µ_{eff}$ scale. However, 
+the outputs are two separate files, each for positive and negative mobilities. 
+We developed the `MobilityTransformR` package to perform  mobility 
+transformation of CE-MS/MS data in the R environment. Also, different 
+to ROMANCE, the output will be a single file containing both, the positive 
+and negative effective mobilities. 
 
-The transformation is performed using functionality from the packages <code>MetaboCoreUtils</code>,
-<code>xcms</code>, <code>MSnbase</code>, and <code>Spectra</code>. The 
-transformed data can be exported as <code>.mzML</code> file and can be further 
+The transformation is performed using functionality from the packages 
+`MetaboCoreUtils`,`xcms`, `MSnbase`, and `Spectra`. The 
+transformed data can be exported as `.mzML` file and can be further 
 analyzed in R or other software.
 
 
 # Setup
 
 ## Installation
-The <code>MobilityTransformR</code> package can be installed as follows: 
+The `MobilityTransformR` package can be installed as follows: 
 
 ```{r, eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
+}
 
 BiocManager::install("MobilityTransformR")
 ```
 
+To show the different functionality of `MobilityTransformR`, we
+need also to load the packages `xcms` and `Spectra`.
+If you have not installed them yet, type
+
+```{r, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+
+BiocManager::install("xcms")
+BiocManager::install("Spectra")
+```
+into the Console.
+
 ## Load required libries
-<code>MobilityTransformR</code> integrates functions from different 
+`MobilityTransformR` integrates functions from different 
 libraries.
 
 ```{r libraries, message=FALSE, warning=FALSE}
@@ -81,61 +102,73 @@ library(Spectra)
 
 ## Load test data
 
-To showcase the functionality of the <code>MobilityTransformR</code> 
-package two CE-MS test sets containing a mixtures of different metabolites at a concentration of 10 ppm and 25 ppm precisely, acquired at positive CE polarity and positive ionization mode is used. Moreover, Paracetamol was added to the analysis as EOF marker in a final concentration of 50 ppm to the sample. Procaine was added as positively charged, secondary marker at a final 
-concentration of 10 ppm. 
-The markers are required for the later effective mobility transformation process. 
-The test data is loaded using the <code>readMSData()</code> function from 
-<code>MSnbase</code>.
+To showcase the functionality of the `MobilityTransformR` 
+package two CE-MS test sets containing a mixtures of different metabolites at 
+a concentration of 10 ppm and 25 ppm precisely, acquired at positive CE 
+polarity and positive ionization mode is used. Moreover, Paracetamol was 
+added to the analysis as EOF marker in a final concentration of 50 ppm to 
+the sample. Procaine was added as positively charged, secondary marker at a 
+final concentration of 10 ppm. 
+The markers are required for the later effective mobility transformation 
+process. 
+The test data is loaded using the `readMSData()` function from 
+`MSnbase`.
 
 ```{r data, message=FALSE}
-fl <- list.files(system.file("extdata/", package = "MobilityTransformR"), 
-                 pattern = ".mzML", full.names = TRUE)
+fl <- list.files(system.file("extdata/", package = "MobilityTransformR"),
+    pattern = ".mzML", full.names = TRUE
+)
 
 # Load mzXML data with MSnBase
 raw_data <- readMSData(files = fl, mode = "onDisk")
 ```
 
 # Get Marker Migration Times
-In order to perform the effective mobility transformation, first the migration 
-times (MTs) of the markers needs to be determined. If multiple files are used,
-the MT of the markers in each file must be determined since they will vary based on EOF fluctuations. 
+In order to perform the effective mobility transformation, first the 
+migration times (MTs) of the markers needs to be determined. If multiple 
+files are used, the MT of the markers in each file must be determined since 
+they will vary based on EOF fluctuations. 
 
-The <code>getMtime()</code> function requires an <code>OnDiskMSnExp</code> object,<code>raw_data</code>, as input and uses an mz-range <code>mz</code> and MT-range <code>mt</code> to generate an Extracted Ion Electropherogram (EIE). The MT of the peak will be determined by <code>findChromPeaks</code> from 
-<code>xcms</code>.
-It is very important to define the <code>mz</code>-range and 
-<code>mt</code>-range as narrow as possible to ensure that the right peak will 
-be picked. The mz-tolerance defining the <code>mz</code>-range depends on the 
+The `getMtime()` function requires an `OnDiskMSnExp` object,`raw_data`, as 
+input and uses an mz-range `mz` and MT-range `mt` to generate an Extracted 
+Ion Electropherogram (EIE). The MT of the peak will be determined by 
+`findChromPeaks` from 
+`xcms`.
+It is very important to define the `mz`-range and 
+`mt`-range as narrow as possible to ensure that the right peak will 
+be picked. The mz-tolerance defining the `mz`-range depends on the 
 mass accuracy of the mass spectrometer that was used to acquire the data.
 
 ## Get MT of EOF Marker Paracetamol
+In order to check the right `mz`-, and `mt`-window for the exact MT 
+determination, we use the`plot(chromatogram())` function to plot the 
+respective EIE. 
 
-In order to check the right <code>mz</code>-, and <code>mt</code>-window for the exact MT determination, we use the
-<code>plot(chromatogram())</code> function to plot the respective EIE. 
-
-Note that the plot functions are adapted from LC-MS package <code>MSnbase</code>, which has 
-"retention time" as default x-axis label. 
+Note that the plot functions are adapted from LC-MS package `MSnbase`, 
+which has "retention time" as default x-axis label. 
 
 ```{r EOF marker, message=FALSE, warning=FALSE}
-# mz tolerance depends on MS mass accuracy 
+# mz tolerance depends on MS mass accuracy
 tolerance <- 0.005
 
 # [M+H]+ of paracetamol: mz = 152.071154
 mz_paracetamol <- c(152.071154 - tolerance, 152.071154 + tolerance)
 mt_paracetamol <- c(600, 900)
 
-marker_EIE <-  raw_data |> filterMz(mz = mz_paracetamol) |> 
-  filterRt(rt = mt_paracetamol)
+marker_EIE <- raw_data |>
+    filterMz(mz = mz_paracetamol) |>
+    filterRt(rt = mt_paracetamol)
 
-plot(chromatogram(marker_EIE), 
-     main = "Paracetamol EIE", 
-     xlab = "migration time (sec)")
+plot(chromatogram(marker_EIE),
+    main = "Paracetamol EIE",
+    xlab = "migration time (sec)"
+)
 
 # adjust mz and MT windows if necessary
 ```
 
 Use the adapted values to get the exact MT of Paracetamol. 
-If several files will be used it is important to select a <code>mt</code>-range 
+If several files will be used it is important to select a `mt`-range 
 wide enough to get the right Paracetamol-peaks in all files, because single 
 migration times might change significantly due to EOF-fluctuations between 
 measurements. 
@@ -143,32 +176,34 @@ measurements.
 ```{r EOF marker getMT, message=FALSE, warning=FALSE}
 # get the MT of paracetamol
 paracetamol <- getMtime(raw_data,
-                        mz = mz_paracetamol, 
-                        mt = mt_paracetamol)
+    mz = mz_paracetamol,
+    mt = mt_paracetamol
+)
 paracetamol
-
 ```
 
 ## MT of Secondary Marker Procaine
-Effective mobilities can be already calculated using the EOF marker Paracetamol. 
-However, it is also possible to calculate the mobility using a secondary marker. 
-This might be of interest for example when the peak shape of the main marker is 
-not sufficient or ambiguity detection.
+Effective mobilities can be already calculated using the EOF marker 
+Paracetamol. However, it is also possible to calculate the mobility using a 
+secondary marker. This might be of interest for example when the peak 
+shape of the main marker is not sufficient or ambiguity detection.
 
 In order to show how we can use a secondary marker to convert the data, we 
-create in the next step a dataframe containing the MT and file information from 
-another, secondary marker called Procaine.
+create in the next step a data.frame containing the MT and file information 
+from another, secondary marker called Procaine.
 
 ```{r charged marker, message=FALSE, warning=FALSE}
-procaine <- data.frame("rtime" = c(450.239, 465.711),
-                       "fileIdx" = c(1, 2))
+procaine <- data.frame(
+    "rtime" = c(450.239, 465.711),
+    "fileIdx" = c(1, 2)
+)
 ```
 
 
 # Effective mobility scale transformation
-<code>mobilityTransform</code> uses different functions to perform the effective
-mobility transformation depending on the input type. It is possible to convert
-<code>numeric</code>, <code>Spectra</code>, and <code>OnDiskMSnExp</code>. 
+`mobilityTransform` uses different functions to perform the effective
+mobility transformation depending on the input type. It is possible to 
+convert `numeric`, `Spectra`, and `OnDiskMSnExp`. 
 Here, we show how each input-class can be transformed.
 
 ## Effective mobility transformation of single migration times
@@ -184,8 +219,8 @@ The standard equation to calculate effective mobility $µ_{eff}$ is
   (\#eq:mobility1)
 \end{equation}
 
-with $t_M$ the migration time that is transformed, $t_{EOF}$ the MT of the EOF 
-marker and optional $t_R$ which is the time of the electrical field ramp.
+with $t_M$ the migration time that is transformed, $t_{EOF}$ the MT of the 
+EOF marker and optional $t_R$ which is the time of the electrical field ramp.
 
 If the peak shape of the EOF marker is bad or it cannot be detected for other 
 reasons, the effective mobility might also be calculated using a secondary 
@@ -196,10 +231,12 @@ mobility marker with known mobility:
       \frac{1}{t_A - (t_R/2)}) 
   (\#eq:mobility2)
 \end{equation}
-with $t_A$, the MT of the secondary marker and its corresponding mobility $µ_A$. 
+with $t_A$, the MT of the secondary marker and its corresponding mobility 
+$µ_A$. 
 
-Last, the mobility might be calculated using both markers. Therefore, there is 
-no need to know the applied electrical field nor the exact capillary length. 
+Last, the mobility might be calculated using both markers. Therefore, there 
+is no need to know the applied electrical field nor the exact capillary 
+length. 
 
 \begin{equation}
       µ_{eff} = µ_A \frac{t_M - t_{EOF}}{t_A - t_{EOF}} * 
@@ -209,104 +246,112 @@ no need to know the applied electrical field nor the exact capillary length.
 
 
 ## Calculation of the Secondary Marker Mobility $µ_A$ 
-First, a <code>data.frame</code> is created that stores the marker information, 
-that will be used to transform the data. Either one or two markers can be used 
-for the transformation. The <code>data.frame</code> needs at least the columns
-<code>rtime</code> and <code>mobility</code>. Additional columns to store marker 
+First, a `data.frame` is created that stores the marker information, 
+that will be used to transform the data. Either one or two markers can be 
+used for the transformation. The `data.frame` needs at least the columns
+`rtime` and `mobility`. Additional columns to store marker 
 information might be added as well.
 Here, we start with the neutral EOF marker Paracetamol, having the effective 
 mobility of 0 $\frac{mm^2}{kV*min}$.
 
 ```{r, message=FALSE}
-# Create a data.frame that stores marker information 
+# Create a data.frame that stores marker information
 marker <- paracetamol
-marker$markerID = "Paracetamol"
-marker$mobility = 0
+marker$markerID <- "Paracetamol"
+marker$mobility <- 0
 ```
 
 
-Then the effective mobility of the secondary mobility marker Procaine, as single 
-migration time, is determined according to eq. \@ref(eq:mobility1).
-The transformation is performed using the marker information from Paracetamol. 
-Moreover, if only a single marker is provided for the transformation, also the 
-applied voltage <code>U</code> in kV, and the total and effective capillary 
-length <code>L</code> in mm is needed. 
-Additionally the field ramping time <code>tR</code> (in min) can be included for
+Then the effective mobility of the secondary mobility marker Procaine, as 
+single migration time, is determined according to eq. \@ref(eq:mobility1).
+The transformation is performed using the marker information from 
+Paracetamol. 
+Moreover, if only a single marker is provided for the transformation, also 
+the applied voltage `U` in kV, and the total and effective capillary 
+length `L` in mm is needed. 
+Additionally the field ramping time `tR` (in min) can be included for
 corrections. 
 
 ```{r mobility, message=FALSE}
-procaineMobility <- mobilityTransform(x = procaine[1,1], marker = marker[1,], 
-                                      tR = 3/60, U = +30, L = 800)
+procaineMobility <- mobilityTransform(
+    x = procaine[1, 1], marker = marker[1, ],
+    tR = 3 / 60, U = +30, L = 800
+)
 procaineMobility
-
 ```
 
 Note: The unit of the mobility is $\frac{mm^2}{kV*min}$
 
 ## Effective mobility transformation of whole CE-MS runs
 
-<code>mobilityTransform</code> can also be applied to whole CE-MS runs stored 
-either as <code>Spectra</code>-object or <code>OnDiskMSnExp</code>-object.
-As shown as before, either a single or two markers can be used for conversion. 
+`mobilityTransform` can also be applied to whole CE-MS runs stored 
+either as `Spectra`-object or `OnDiskMSnExp`-object.
+As shown as before, either a single or two markers can be used for 
+conversion. 
 Here, we add the marker information of Procaine to the marker 
-<code>data.frame</code>, so the transformation will be done on both markers 
+`data.frame`, so the transformation will be done on both markers 
 according to eq. \@ref(eq:mobility3).
 
 ```{r, message=FALSE}
-procaine$markerID = "Procaine"
-procaine$mobility = procaineMobility
+procaine$markerID <- "Procaine"
+procaine$mobility <- procaineMobility
 marker <- rbind(marker, procaine)
 ```
 
 
 ### Effective mobility transformation of OnDiskMSnExp objects
-The migration time scale of <code>raw_data2</code> is transformed, returning the 
+The migration time scale of `raw_data2` is transformed, returning the 
 same class.
 
 ```{r, message=FALSE}
 # Conversion of mt in OnDiskMSnExp objects
 mobility_data <- mobilityTransform(x = raw_data, marker = marker)
 
-#OnDiskMSnExp can by exported by writeMSData, Note that it is important to set
-#copy = FALSE, (otherwise spectrum ordering will be wrong)
+# OnDiskMSnExp can by exported by writeMSData, Note that it is important to
+# set copy = FALSE, (otherwise spectrum ordering will be wrong)
 fl_mobility_data <- tempfile()
-writeMSData(filterFile(mobility_data, 1), 
-            file = fl_mobility_data, copy = FALSE)
+writeMSData(filterFile(mobility_data, 1),
+    file = fl_mobility_data, copy = FALSE
+)
 ```
 
 
 ### Effective mobility transformation of Spectra objects
-<code>Spectra</code>-objects can be transformed similarly in 
-<code>mobilityTransform</code>. 
-The resulting <code>Spectra</code>-objects can then also be exported as 
-<code>.mzML</code> for further processing in different software.
+`Spectra`-objects can be transformed similarly in 
+`mobilityTransform`. 
+The resulting `Spectra`-objects can then also be exported as 
+`.mzML` for further processing in different software.
 ```{r, message=FALSE}
-#load the test data as spectra object
+# load the test data as spectra object
 spectra_data <- Spectra(fl[1], backend = MsBackendMzR())
 
-spectra_mobility <- mobilityTransform(spectra_data, 
-                                      marker[marker$fileIdx == 1,])
+spectra_mobility <- mobilityTransform(
+    spectra_data,
+    marker[marker$fileIdx == 1, ]
+)
 
 
-#Transformed data can then be exported again as .mzML file to use in xcms or
-#other software
+# Transformed data can then be exported again as .mzML file to use in xcms or
+# other software
 fl_mobility <- tempfile()
 export(spectra_mobility, MsBackendMzR(), file = fl_mobility)
-
 ```
 
 
 # Inspect and Analyze the Transformed Data 
 The transformed data can displayed and further analyzed with  e.g. 
-<code>xcms</code>. Note that the effective mobility can be accessed by e.g. 
-<code>spectra_mobility$rtime</code>, since functions where adapted from LC-MS 
-based <code>rformassspectrometry</code> functions.
+`xcms`. Note that the effective mobility can be accessed by e.g. 
+`spectra_mobility$rtime`, since functions where adapted from LC-MS 
+based `rformassspectrometry` functions.
 The resulting unit of the effective mobility is $\frac{mm^2}{kV*min}$.
 
-Here, we inspect them with the <code>plot(chromatogram())</code> function from 
-<code>xcms</code>. 
+Here, we inspect them with the `plot(chromatogram())` function from 
+`xcms`. 
 
-As described before, the test data contain different metabolites in 10 ppm and 25 ppm final concentration, acquired in positive ionization mode. We can check the effective mobilities of single compounds by extracting their EIE as for example Lysine (mz = 147.112806).
+As described before, the test data contain different metabolites in 10 ppm 
+and 25 ppm final concentration, acquired in positive ionization mode. We can 
+check the effective mobilities of single compounds by extracting their EIE as 
+for example Lysine (mz = 147.112806).
 
 
 ```{r mobility transformed data, message=FALSE}
@@ -315,24 +360,24 @@ mz_lysine <- c(147.112806 - tolerance, 147.112806 + tolerance)
 mobilityRestriction <- c(1000, 2500)
 
 # Extract ion electropherogram of compound
-lysine_EIE <-  mobility_data |> 
-    filterMz(mz = mz_lysine) |> 
+lysine_EIE <- mobility_data |>
+    filterMz(mz = mz_lysine) |>
     filterRt(rt = mobilityRestriction)
 
-plot(chromatogram(lysine_EIE), 
-     main = expression(paste("Lysine EIE - µ"[eff]," scale")), 
-     xlab = expression(paste("µ"[eff],"  (", frac("mm"^2,"kV min"),")"))
-     )
+plot(chromatogram(lysine_EIE),
+    main = expression(paste("Lysine EIE - µ"[eff], " scale")),
+    xlab = expression(paste("µ"[eff], "  (", frac("mm"^2, "kV min"), ")"))
+)
 
 # compare with extracted ion electropherogram of migration time scale
-lysine_mt_EIE <-  raw_data |> 
+lysine_mt_EIE <- raw_data |>
     filterMz(mz = mz_lysine) |>
     filterRt(c(400, 600))
 
 plot(chromatogram(lysine_mt_EIE),
-     main = "Lysine EIE - MT scale", 
-     xlab = "MT (sec)")
-
+    main = "Lysine EIE - MT scale",
+    xlab = "MT (sec)"
+)
 ```
 
 
@@ -344,6 +389,3 @@ sessionInfo()
 
 
 # References
-
-
-

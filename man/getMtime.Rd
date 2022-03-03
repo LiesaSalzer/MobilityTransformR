@@ -15,49 +15,53 @@ getMtime(
 \item{x}{\code{OnDiskMSnExp} object, containing CE-MS(/MS) data from a single file (e.g.
 filtered by \code{filterFile()}).
 The migration time (mt) is provided in sec. The CE-MS data contain known
-compounds \code{mz}, of which the exact migration time is going to be determined.}
+compounds \code{mz}, of which the exact migration time is going to be
+determined.}
 
-\item{mz}{\code{numeric}, with upper and lower limit, (length(\code{mz}) = 2), representing the
-mz range of the compound of which the migration time is going to be
-determined. The range should be as narrow as possible but depends on the mass
-accuracy of the mass spectrometer that has been used to acquire the data.}
+\item{mz}{\code{numeric}, with upper and lower limit, (length(\code{mz}) = 2), representing
+the mz range of the compound of which the migration time is going to be
+determined. The range should be as narrow as possible but depends on the
+mass accuracy of the mass spectrometer that has been used to acquire the
+data.}
 
 \item{mt}{\code{numeric}, with upper and lower limit, (length(\code{mt}) = 2), limiting the
 migration tame range of the compound.
-Use a narrow \code{mt} range, to to avoid that other components with the same mz
-and different mt are being picked.}
+Use a narrow \code{mt} range, to to avoid that other components with the same
+mz and different mt are being picked.}
 
 \item{param}{\code{method}, from xcms that defined how peaks will be picked. The default is
 \code{MatchedFilterParam(binSize = 1, snthresh = 100)}}
 }
 \value{
 \code{data.frame} with two columns "rtime" storing the migration time in sec,
-and "fileIdx" storing the file index and the number of rows corresponding to
-the number of input files.
+and "fileIdx" storing the file index and the number of rows corresponding
+to the number of input files.
 }
 \description{
-The function \code{getMtime} searches the migration time (mt) of a known compound
-within a specified mz and mt range (\code{mz} and \code{mt}).
+The function \code{getMtime} searches the migration time (mt) of a known
+compound within a specified mz and mt range (\code{mz} and \code{mt}).
 }
 \details{
-\code{getMtime} uses CE-MS data stored in \code{OnDiskMSnExp} objects to search for the
-migration time of selected compounds as for example EOF markers in order to
-perform effective mobility scale transformation.
+\code{getMtime} uses CE-MS data stored in \code{OnDiskMSnExp} objects to search for
+the migration time of selected compounds as for example EOF markers in
+order to perform effective mobility scale transformation.
 The \code{OnDiskMSnExp} object is filtered using the defined mz-range \code{mz}, and
 the mt-range \code{mt}, where the compound is expected to migrate.
-The migration time is determined by applying the peak picking algorithm from
-xcms.
+The migration time is determined by applying the peak picking algorithm
+from xcms.
 }
 \examples{
-fl <- system.file("extdata/CEMS_10ppm.mzML", 
-package = "MobilityTransformR")
-raw_data <- readMSData(files = fl,
-                       mode = "onDisk")
+fl <- system.file("extdata/CEMS_10ppm.mzML",
+    package = "MobilityTransformR"
+)
+raw_data <- readMSData(
+    files = fl,
+    mode = "onDisk"
+)
 # [M+H]+ of paracetamol: mz = 152.071154
 mz_paracetamol <- c(152.071154 - 0.005, 152.071154 + 0.005)
-mt_paracetamol <- c(600, 900)                      
-getMtime(raw_data, mz = mz_paracetamol, mt = mt_paracetamol)                       
-                       
+mt_paracetamol <- c(600, 900)
+getMtime(raw_data, mz = mz_paracetamol, mt = mt_paracetamol)
 }
 \author{
 Liesa Salzer

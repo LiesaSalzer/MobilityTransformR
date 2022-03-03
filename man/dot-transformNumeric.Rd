@@ -9,25 +9,27 @@
 \arguments{
 \item{x}{\code{numeric} migration time vector in seconds.}
 
-\item{marker}{\code{data.frame} containing minimum two columns, where one holds the determined
-migration time in minutes (here referred to as "rtime") of the EOF marker in
-the same run in which the migration time is going to be transformed and the
-other column the respective mobility ("mobility") of the EOF markers. Each
-row hold the values for one EOF marker.
-If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required, that
-stores the file Index.
+\item{marker}{\code{data.frame} containing minimum two columns, where one holds the
+determined migration time in minutes (here referred to as "rtime") of
+the EOF marker in the same run in which the migration time is going
+to be transformed and the other column the respective mobility
+("mobility") of the EOF markers.
+Each row hold the values for one EOF marker.
+If \code{OnDiskMSnExp} is used in \code{x}, a third column "fileIdx" is required,
+that stores the file Index.
 One or two entries are required per file for the transformation and
 depending on the number of entries the transformation will be performed
 either on one or both markers.}
 
-\item{tR}{\code{numeric} a single value that defines the time (in minutes) of the
-electrical field ramp. The default is 0.}
+\item{tR}{\code{numeric} a single value that defines the time (in minutes) of
+the electrical field ramp. The default is 0.}
 
-\item{U}{\code{numeric} a single value that defines the voltage (in kV) applied.
+\item{U}{\code{numeric} a single value that defines the voltage (in kV)
+applied.
 Note that for reversed polarity CE mode a negative value is needed.}
 
-\item{L}{\code{numeric} a single value that defines the total length (in mm) of
-the capillary that was used for CE(-MS) analysis.}
+\item{L}{\code{numeric} a single value that defines the total length (in mm)
+of the capillary that was used for CE(-MS) analysis.}
 }
 \value{
 \code{numeric} vector that represents effective mobility in mm^2 / (kV * min)
@@ -36,11 +38,14 @@ the capillary that was used for CE(-MS) analysis.}
 Transformation of numeric
 }
 \examples{
-rtime <- c(10,20,30,40,50,60,70,80,90,100)
-marker <- data.frame(markerID = c("marker1", "marker2"),
-                     rtime = c(20,80),
-                     mobility = c(0, 2000))
-MobilityTransformR:::.transformNumeric(x = rtime, marker = marker, tR = 3, 
-U = 30, L = 90) 
-
+rtime <- c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+marker <- data.frame(
+    markerID = c("marker1", "marker2"),
+    rtime = c(20, 80),
+    mobility = c(0, 2000)
+)
+MobilityTransformR:::.transformNumeric(
+    x = rtime, marker = marker, tR = 3,
+    U = 30, L = 90
+)
 }
