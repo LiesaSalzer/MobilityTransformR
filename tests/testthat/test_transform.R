@@ -25,8 +25,7 @@ test_that("Transformation of numeric vectors works", {
     )
     expect_error(
         mobilityTransform(c(1, 2, 3, "a"), marker),
-        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' 
-        but not class 'character'"
+        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but not class 'character'"
     )
     expect_error(
         mobilityTransform(rtime),
@@ -61,8 +60,7 @@ test_that("Transformation of Spectra works", {
     )
     expect_error(
         mobilityTransform("A", marker),
-        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but
-          not class 'character'"
+        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but not class 'character'"
     )
     expect_error(
         mobilityTransform(spectra_data),
@@ -125,8 +123,7 @@ test_that("Transformation of OnDiskExp works", {
     )
     expect_error(
         mobilityTransform("A", marker),
-        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but
-          not class 'character'"
+        "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp' but not class 'character'"
     )
     expect_error(
         mobilityTransform(raw_data),

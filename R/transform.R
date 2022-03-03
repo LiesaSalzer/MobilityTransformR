@@ -113,7 +113,7 @@ mobilityTransform <- function(x, marker,
     if (!class(x) %in% c("numeric", "Spectra", "OnDiskMSnExp")) {
         stop(
             "'x' needs to be of class 'numeric', 'Spectra' or 'OnDistMSnExp'",
-            "but not class '", class(x), "'"
+            " but not class '", class(x), "'"
         )
     }
     if (missing(marker)) {
