@@ -1,6 +1,6 @@
 ---
 title: "Description and usage of MobilityTransformR"
-package: "`r BiocStyle::pkg_ver('MobilityTransformationR')`"
+package: "`r BiocStyle::pkg_ver('MobilityTransformR')`"
 date: "`r BiocStyle::doc_date()`"
 author: 
 - name: Liesa Salzer
