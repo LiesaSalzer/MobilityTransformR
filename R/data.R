@@ -25,4 +25,4 @@
 #' and `filterMz(mz = c(147.1, 152.0))` from `MSnBase`
 #'
 #' @author Liesa Salzer
-#'
+NULL
