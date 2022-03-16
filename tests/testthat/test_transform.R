@@ -38,8 +38,8 @@ test_that("Transformation of numeric vectors works", {
 })
 
 test_that("Transformation of Spectra works", {
-    spectra_data <- Spectra::Spectra(system.file("extdata/CEMS_10ppm.mzML",
-        package = "MobilityTransformR"
+    spectra_data <- Spectra::Spectra(system.file("CE-MS/CEMS_10ppm.mzML",
+        package = "msdata"
     ))
 
     transf <- mobilityTransform(x = spectra_data, marker = marker)
@@ -91,8 +91,8 @@ test_that("Transformation of Spectra works", {
 
 
 test_that("Transformation of OnDiskExp works", {
-    fl <- system.file("extdata/CEMS_10ppm.mzML",
-        package = "MobilityTransformR"
+    fl <- system.file("CE-MS/CEMS_10ppm.mzML",
+        package = "msdata"
     )
     raw_data <- MSnbase::readMSData(
         files = fl,

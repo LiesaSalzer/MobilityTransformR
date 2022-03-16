@@ -12,7 +12,7 @@ vignette: >
     %\VignetteEngine{knitr::rmarkdown}
     %\VignetteEncoding{UTF-8}
     %\VignettePackage{MobilityTransformR}
-    %\VignetteDepends{MobilityTransformR,xcms,BiocStyle}
+    %\VignetteDepends{MobilityTransformR,xcms,BiocStyle,msdata}
 output:
     BiocStyle::html_document:
         toc_float: true    
@@ -62,6 +62,8 @@ The transformation is performed using functionality from the packages
 The transformed data can be exported as `.mzML` file and can be further 
 analyzed in R or other software.
 
+The CE-MS test data are from the `r BiocStyle::Biocpkg("msdata")` package.
+
 
 # Setup
 
@@ -105,11 +107,13 @@ library(Spectra)
 ## Load test data
 
 To showcase the functionality of the `MobilityTransformR` 
-package two CE-MS test sets containing a mixtures of different metabolites at 
-a concentration of 10 ppm and 25 ppm precisely, acquired at positive CE 
-polarity and positive ionization mode is used. Moreover, Paracetamol was 
-added to the analysis as EOF marker in a final concentration of 50 ppm to 
-the sample. Procaine was added as positively charged, secondary marker at a 
+package two CE-MS test sets containing a mixtures of different metabolites 
+at a concentration of 10 ppm and 25 ppm precisely, acquired at positive 
+CE polarity and positive ionization mode is used and imported from the 
+`msdata`package. 
+Paracetamol was added to the analysis as EOF marker in a final 
+concentration of 50 ppm to the sample. Procaine was added as 
+positively charged, secondary marker at a 
 final concentration of 10 ppm. 
 The markers are required for the later effective mobility transformation 
 process. 
@@ -117,7 +121,7 @@ The test data is loaded using the `readMSData()` function from
 `MSnbase`.
 
 ```{r data, message=FALSE}
-fl <- list.files(system.file("extdata/", package = "MobilityTransformR"),
+fl <- list.files(system.file("CE-MS", package = "msdata"),
     pattern = ".mzML", full.names = TRUE
 )
 
