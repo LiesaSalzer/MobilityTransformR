@@ -1,6 +1,6 @@
 Package: MobilityTransformR
 Title: Effective mobility scale transformation of CE-MS(/MS) data 
-Version: 0.99.12
+Version: 0.99.13
 Description: MobilityTransformR collects a tool set for effective mobility scale transformation of CE-MS/MS data in order to increase reproducibility. It provides functionality to determine the migration times from mobility markers that have been added to the analysis and performs the transformation based on these markers. MobilityTransformR supports the conversion of numeric vectors, Spectra-objects, and MSnOnDiskExp.
 Authors@R: person("Liesa", "Salzer",
            email = "liesa.salzer@helmholtz-muenchen.de",
@@ -15,11 +15,11 @@ Imports:
     Spectra
 Suggests:
     testthat,
+    msdata (>= 0.35.3),
     knitr (>= 1.1.0),
     roxygen2,
     BiocStyle (>= 2.5.19),
-    rmarkdown,
-    msdata (>= 0.35.3)
+    rmarkdown
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: FALSE
