@@ -55,8 +55,8 @@
 #' @import MSnbase
 #'
 #' @examples
-#' fl <- system.file("extdata/CEMS_10ppm.mzML",
-#'     package = "MobilityTransformR"
+#' fl <- system.file("CE-MS/CEMS_10ppm.mzML",
+#'     package = "msdata"
 #' )
 #' raw_data <- readMSData(
 #'     files = fl,

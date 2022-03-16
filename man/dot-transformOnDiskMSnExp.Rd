@@ -39,8 +39,8 @@ mm^2 / (kV * min).
 Transformation of OnDiskMSnExp
 }
 \examples{
-fl <- system.file("extdata/CEMS_10ppm.mzML",
-    package = "MobilityTransformR"
+fl <- system.file("CE-MS/CEMS_10ppm.mzML",
+    package = "msdata"
 )
 raw_data <- MSnbase::readMSData(
     files = fl,

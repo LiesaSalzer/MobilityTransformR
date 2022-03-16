@@ -225,8 +225,8 @@ mobilityTransform <- function(x, marker,
 #' @importFrom Spectra rtime
 #'
 #' @examples
-#' spectra_data <- Spectra::Spectra(system.file("extdata/CEMS_10ppm.mzML",
-#'     package = "MobilityTransformR"
+#' spectra_data <- Spectra::Spectra(system.file("CE-MS/CEMS_10ppm.mzML",
+#'     package = "msdata"
 #' ))
 #' marker <- data.frame(
 #'     markerID = c("marker1", "marker2"),
@@ -288,8 +288,8 @@ mobilityTransform <- function(x, marker,
 #' @import MSnbase
 #'
 #' @examples
-#' fl <- system.file("extdata/CEMS_10ppm.mzML",
-#'     package = "MobilityTransformR"
+#' fl <- system.file("CE-MS/CEMS_10ppm.mzML",
+#'     package = "msdata"
 #' )
 #' raw_data <- MSnbase::readMSData(
 #'     files = fl,

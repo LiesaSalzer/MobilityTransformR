@@ -51,8 +51,8 @@ The migration time is determined by applying the peak picking algorithm
 from xcms.
 }
 \examples{
-fl <- system.file("extdata/CEMS_10ppm.mzML",
-    package = "MobilityTransformR"
+fl <- system.file("CE-MS/CEMS_10ppm.mzML",
+    package = "msdata"
 )
 raw_data <- readMSData(
     files = fl,

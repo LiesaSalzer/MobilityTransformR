@@ -38,8 +38,8 @@ of the capillary that was used for CE(-MS) analysis.}
 Transformation of Spectra
 }
 \examples{
-spectra_data <- Spectra::Spectra(system.file("extdata/CEMS_10ppm.mzML",
-    package = "MobilityTransformR"
+spectra_data <- Spectra::Spectra(system.file("CE-MS/CEMS_10ppm.mzML",
+    package = "msdata"
 ))
 marker <- data.frame(
     markerID = c("marker1", "marker2"),
