@@ -121,8 +121,8 @@ The test data is loaded using the `readMSData()` function from
 `MSnbase`.
 
 ```{r data, message=FALSE}
-fl <- list.files(system.file("CE-MS", package = "msdata"), 
-                 full.names = TRUE)
+fl <- dir(system.file("CE-MS", package = "msdata"), 
+          full.names = TRUE)
 
 # Load mzXML data with MSnBase
 raw_data <- readMSData(files = fl, mode = "onDisk")
